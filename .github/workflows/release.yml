@@ -30,8 +30,8 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
         if_key_exists: replace
 
-    - name: Release Package
-      run: ./amdgpu.sh
+    - name: Sync Repository
+      run: chmod +x ./amdgpu.sh &&  ./amdgpu.sh
 
     - name: Purge cache
       uses: jakejarvis/cloudflare-purge-action@master
