@@ -11,7 +11,7 @@ set- e
 mkdir -p ./output/amdgpu
 cd ./output/amdgpu
 wget -r --no-parent http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool
-ls
+tree
 
 # Add the new package to the repo
 #reprepro -V --basedir ./output/repo/ includedeb lunar ./output/*.deb
