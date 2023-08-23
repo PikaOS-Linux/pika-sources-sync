@@ -7,7 +7,7 @@ set- e
 
 # Pull down existing ppa repo db files etc
 #rsync -azP --exclude '*.deb' ferreo@direct.pika-os.com:/srv/www/pikappa/ ./output/repo
-
+apt install -y tree
 mkdir -p ./output/amdgpu
 cd ./output/amdgpu
 wget -r --no-parent http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool
