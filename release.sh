@@ -11,7 +11,7 @@ apt install -y tree
 
 mkdir -p ./output/amdgpu
 cd ./output/amdgpu
-wget --recursive --no-parent -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool
+wget --recursive --no-parent -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/ || true
 tree
 
 # Add the new package to the repo
