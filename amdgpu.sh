@@ -28,6 +28,8 @@ cd ../
 mkdir -p ./proprietary
 cd ./proprietary
 wget --recursive --no-parent -R "20.04*.deb" -m https://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/proprietary/
+# Retrun to AMDGPU MIRROR
+cd ../
 # Check final result
 tree
 

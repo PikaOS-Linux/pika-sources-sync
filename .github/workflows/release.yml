@@ -1,4 +1,4 @@
-name: PikaOS Package Release
+name: PikaOS Radeon AMDGPU Sync
 
 on:
   workflow_dispatch
@@ -31,7 +31,7 @@ jobs:
         if_key_exists: replace
 
     - name: Release Package
-      run: ./release.sh
+      run: ./amdgpu.sh
 
     - name: Purge cache
       uses: jakejarvis/cloudflare-purge-action@master
