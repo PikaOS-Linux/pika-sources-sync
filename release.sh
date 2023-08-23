@@ -9,6 +9,7 @@ set- e
 #rsync -azP --exclude '*.deb' ferreo@direct.pika-os.com:/srv/www/pikappa/ ./output/repo
 apt install -y tree apt-mirror
 apt-mirror -c http://repo.radeon.com/amdgpu/5.5.3/ubuntu
+rsync -av --exclude '20.04*.deb' /var/spool/apt-mirror/mirror/repo.radeon.com/amdgpu/5.5.3/ubuntu ./output/amdgpu
 mkdir -p ./output/amdgpu
 tree ./output/amdgpu
 
