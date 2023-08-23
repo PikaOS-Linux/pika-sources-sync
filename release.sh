@@ -8,7 +8,7 @@
 
 mkdir -p ./output/amdgpu
 cd ./output/amdgpu
-wget -r -np -nH --cut-dirs=3 -R index.html http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool
+wget -r -np -nH -R index.html http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool
 ls
 
 # Add the new package to the repo
