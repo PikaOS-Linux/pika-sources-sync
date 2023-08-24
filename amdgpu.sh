@@ -38,11 +38,11 @@ dpkg-sig --sign builder ./output/*.deb
 rsync -azP --exclude '*.deb' ferreo@direct.pika-os.com:/srv/www/pikappa/ ./output/repo
 
 # Check if the amdgpu component exists
-if cat ./output/repo/conf/distributions | tr '\n' ',' | grep "Codename: lunar" | grep "Components: amdgpu"
+if cat ./output/repo/conf/distributions | grep Components: | grep amdgpu
 then
     true
 else
-    echo -e "\nOrigin: ppa.pika-os.com\nLabel: apt repository\nCodename: lunar \nArchitectures: source i386 amd64\nComponents: amdgpu\nDescription: pika-os amdgpu repo\nSignWith: AB78C60DFB581603\nPull: lunar" >> ./output/repo/conf/distributions 
+    sed -i "s#Components:#Components: amdgpu#" ./output/repo/conf/distributions
 fi
 
 # Add the new package to the repo
