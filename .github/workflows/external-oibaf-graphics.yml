@@ -1,4 +1,4 @@
-name: PikaOS Launchpad Oibaf Graphics Build Deps Sync
+name: PikaOS external Oibaf Graphics Build Deps Sync
 
 on:
   workflow_dispatch
@@ -31,7 +31,7 @@ jobs:
         if_key_exists: replace
 
     - name: Sync Repository
-      run: chmod +x ./launchpad-oibaf-graphics.sh &&  ./launchpad-oibaf-graphics.sh
+      run: chmod +x ./external-oibaf-graphics.sh &&  ./external-oibaf-graphics.sh
 
     - name: Purge cache
       uses: jakejarvis/cloudflare-purge-action@master
