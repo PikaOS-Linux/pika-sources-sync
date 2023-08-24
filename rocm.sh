@@ -7,7 +7,7 @@ apt install tree
 mkdir -p ./output/rocm
 cd ./output/rocm
 # Get ROCm pool
-wget -np -c -r -v -nd -R "*20.04*.deb" -A "*" -m "http://repo.radeon.com/rocm/apt/5.6/pool/main/"
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m "http://repo.radeon.com/rocm/apt/5.6/pool/main/"
 # Return to ROCm MIRROR
 cd ../
 mkdir -p ./output
