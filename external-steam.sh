@@ -23,8 +23,9 @@ echo 'deb [trusted=yes] https://repo.steampowered.com/steam/ stable steam' | sud
 PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-i386/Packages)
 if [ ! -z "$PPP32" ]
 then
-    apt update -y --allow-unauthenticated -o APT::Architecture="i386" -o APT::Architectures="i386"
-    apt download $PPP32 -y
+    dpkg --add-architecture i386
+    apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
+    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y
     rm -rf ./*.deb
 else
     echo "i386 Repos are synced"
@@ -33,8 +34,8 @@ fi
 PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-amd64/Packages)
 if [ ! -z "$PPP64" ]
 then
-    apt update -y --allow-unauthenticated -o APT::Architecture="amd64" -o APT::Architectures="amd64"
-    apt download $PPP64 -y
+    apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
+    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y
 else
     echo "AMD64 Repos are synced"
     exit 0
