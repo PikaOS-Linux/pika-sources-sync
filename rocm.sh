@@ -19,13 +19,13 @@ rm -rf  /etc/apt/preferences.d/*pika*
 for i in $(cat ./Packages | grep "Package: " | awk '{print $2}')
 do
     # Get ROCm pool from pika
-    echo 'deb [arch=amd64 trusted=yes] https://ppa.pika-os.com/ lunar rocm' | sudo tee /etc/apt/sources.list.d/rocm-pika.list
-    apt update --allow-unauthenticated -y
+    echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/pika-keyring.gpg.key] https://ppa.pika-os.com/ lunar rocm' | sudo tee /etc/apt/sources.list.d/rocm-pika.list
+    apt update -y
     apt-cache show $i | grep Version: > ./$i-pika.txt
     rm -rf /etc/apt/sources.list.d/rocm-pika.list
     # Get ROCm pool
     echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy main' | sudo tee /etc/apt/sources.list.d/rocm.list
-    apt update --allow-unauthenticated -y
+    apt update -y
     apt-cache show $i | grep Version: > ./$i-repo.txt
     if [[ $(cat ./$i-pika.txt ) == $(cat ./$i-repo.txt ) ]]
     then
@@ -34,7 +34,7 @@ do
         echo $i >> pkglist.txt
     fi
 done
-apt download $(cat ./pkglist.txt | tr '\n' ' ') -y --allow-unauthenticated
+apt download $(cat ./pkglist.txt | tr '\n' ' ') -y
 # Return to ROCm MIRROR
 cd ../
 mkdir -p ./output
