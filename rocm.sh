@@ -22,9 +22,8 @@ echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy ma
 wget -O - http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add -
 apt update -y
 
-echo $(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm
-/apt/5.6/dists/jammy/main/binary-amd64/Packages)  > ppp.out
-PPP=$(cat ppp.out | tr '\n' ' ')
+PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm
+/apt/5.6/dists/jammy/main/binary-amd64/Packages)
 
 if [ ! -z $PPP ]
 then
