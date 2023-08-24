@@ -24,7 +24,7 @@ apt update -y --allow-unauthenticated
 PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | grep -vE "system76-driver-nvidia|system76-wallpapers" | tr '\n' ' ')
 if [[ ! -z $PPP ]]
 then
-    apt download $() -y
+    apt download $PPP -y
 else
     echo "Repos are synced"
     exit 0

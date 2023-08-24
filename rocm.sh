@@ -25,7 +25,7 @@ apt update -y
 PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages  | tr '\n' ' ')
 if [[ ! -z $PPP ]]
 then
-    apt download $() -y
+    apt download $PPP -y
 else
     echo "Repos are synced"
     exit 0
