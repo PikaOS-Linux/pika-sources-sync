@@ -65,10 +65,10 @@ func compare(basePackages map[string]string, targetPackages map[string]string) {
 	for pack, version := range targetPackages {
 		if baseVersion, ok := basePackages[pack]; ok {
 			if baseVersion != version {
-				print(pack)
+				os.Stdout.WriteString(pack)
 			}
 		} else {
-			print(pack)
+			os.Stdout.WriteString(pack)
 		}
 	}
 }
