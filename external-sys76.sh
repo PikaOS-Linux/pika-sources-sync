@@ -21,9 +21,7 @@ rm -rf  /etc/apt/preferences.d/*pika*
 echo 'deb [arch=amd64 trusted=yes] https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu lunar main' | sudo tee /etc/apt/sources.list.d/external.list
 apt update -y --allow-unauthenticated
 
-echo $(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz) > ppp.out
-PPP=$(cat ppp.out | tr '\n' ' ')
-
+PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz)
 if [ ! -z $PPP ]
 then
     apt download $PPP -y
