@@ -21,17 +21,16 @@ rm -rf  /etc/apt/preferences.d/*pika*
 echo 'deb [arch=amd64 trusted=yes] https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu lunar main' | sudo tee /etc/apt/sources.list.d/external.list
 apt update -y --allow-unauthenticated
 
-export PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr '\n' ' ')
+echo $(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr '\n' ' ')
 
-echo $PPP
 
-if [ ! -z $PPP ]
-then
-    apt download $PPP -y
-else
-    echo "Repos are synced"
+#if [ ! -z $PPP ]
+#then
+#    apt download $PPP -y
+#else
+#    echo "Repos are synced"
     exit 0
-fi
+#fi
 
 # Return to Extranal System76 PPA MIRROR
 cd ../
