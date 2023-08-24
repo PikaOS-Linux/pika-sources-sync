@@ -19,7 +19,8 @@ rm -rf  /etc/apt/preferences.d/*pika*
 
 # Get ROCm pool
 echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy main' | sudo tee /etc/apt/sources.list.d/rocm.list
-apt update -y --allow-unauthenticated
+wget -O - http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add -
+apt update -y
 
 apt download $(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages  | tr '\n' ' ') -y
 # Return to ROCm MIRROR
