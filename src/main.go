@@ -49,7 +49,7 @@ func processFile(url string) map[string]string {
 
 		if currentPackage == "" {
 			if strings.HasPrefix(line, "Package: ") {
-				currentPackage = strings.TrimPrefix(line, "Package: ")
+				currentPackage = strings.TrimPrefix(line, "Package: ") + " "
 			}
 		} else {
 			if strings.HasPrefix(line, "Version: ") {
@@ -65,10 +65,10 @@ func compare(basePackages map[string]string, targetPackages map[string]string) {
 	for pack, version := range targetPackages {
 		if baseVersion, ok := basePackages[pack]; ok {
 			if baseVersion != version {
-				println(pack)
+				print(pack)
 			}
 		} else {
-			println(pack)
+			print(pack)
 		}
 	}
 }
