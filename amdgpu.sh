@@ -1,8 +1,6 @@
 #! /bin/bash
 set -e
 
-apt install -y tree
-
 # AMDGPU MIRROR
 mkdir -p ./output/amdgpu
 cd ./output/amdgpu
@@ -10,13 +8,13 @@ cd ./output/amdgpu
 mkdir -p ./libd
 cd ./libd
 wget --recursive --no-parent -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/libd/
-# Retrun to AMDGPU MIRROR
+# Return to AMDGPU MIRROR
 cd ../
 # amdgpu proprietary dir
 mkdir -p ./proprietary
 cd ./proprietary
 wget --recursive --no-parent -m https://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/proprietary/
-# Retrun to AMDGPU MIRROR
+# Return to AMDGPU MIRROR
 cd ../
 # Get rid of all 20.04 deb files
 find . -name \*20.04*.deb -exec rm -fv {} \;
@@ -24,12 +22,10 @@ find . -name \*20.04*.deb -exec rm -fv {} \;
 mkdir -p ./amdgpu-dkms-firmware
 cd ./amdgpu-dkms-firmware
 wget http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/a/amdgpu-dkms/amdgpu-dkms-firmware_6.0.5.50503-1620033.20.04_all.deb
-# Retrun to AMDGPU MIRROR
+# Return to AMDGPU MIRROR
 cd ../
 mkdir -p ./output
 find . -name \*.deb -exec cp -vf {} ./output \;
-# Check final result
-tree
 
 # Sign the packages
 dpkg-sig --sign builder ./output/*.deb
