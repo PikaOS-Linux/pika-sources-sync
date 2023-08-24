@@ -25,7 +25,7 @@ apt update -y
 PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm
 /apt/5.6/dists/jammy/main/binary-amd64/Packages)
 
-if [ ! -z $PPP ]
+if [ ! -z "$PPP" ]
 then
     apt download $PPP -y
 else
