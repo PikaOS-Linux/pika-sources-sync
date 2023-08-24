@@ -26,7 +26,7 @@ then
     dpkg --add-architecture i386
     apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
     apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y
-    rm -rf ./*.deb
+    rm -rfv ./*all.deb
 else
     echo "i386 Repos are synced"
 fi
