@@ -21,15 +21,17 @@ cd ../
 # amdgpu drm dir
 mkdir -p ./libd
 cd ./libd
-wget --recursive --no-parent -R "20.04*.deb" -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/libd/
+wget --recursive --no-parent -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/libd/
 # Retrun to AMDGPU MIRROR
 cd ../
 # amdgpu proprietary dir
 mkdir -p ./proprietary
 cd ./proprietary
-wget --recursive --no-parent -R "20.04*.deb" -m https://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/proprietary/
+wget --recursive --no-parent -m https://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/proprietary/
 # Retrun to AMDGPU MIRROR
 cd ../
+mkdir -p ./output
+find . -name \*.deb -exec cp -vf {} ./output \
 # Check final result
 tree
 
