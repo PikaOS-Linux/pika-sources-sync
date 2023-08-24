@@ -7,17 +7,15 @@ cd ./output/amdgpu
 # amdgpu drm dir
 mkdir -p ./libd
 cd ./libd
-wget --recursive --no-parent -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/libd/
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/libd/
 # Return to AMDGPU MIRROR
 cd ../
 # amdgpu proprietary dir
 mkdir -p ./proprietary
 cd ./proprietary
-wget --recursive --no-parent -m https://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/proprietary/
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m https://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/proprietary/
 # Return to AMDGPU MIRROR
 cd ../
-# Get rid of all 20.04 deb files
-find . -name \*20.04*.deb -exec rm -fv {} \;
 # amdgpu-dkms-firmware dir
 mkdir -p ./amdgpu-dkms-firmware
 cd ./amdgpu-dkms-firmware
