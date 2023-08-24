@@ -22,7 +22,14 @@ echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy ma
 wget -O - http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add -
 apt update -y
 
-apt download $(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages  | tr '\n' ' ') -y
+PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages  | tr '\n' ' ')
+if [[ ! -z $PPP ]]
+then
+    apt download $() -y
+else
+    echo "Repos are synced"
+    exit 0
+fi
 # Return to ROCm MIRROR
 cd ../
 mkdir -p ./output
