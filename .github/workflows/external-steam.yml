@@ -33,7 +33,7 @@ jobs:
         if_key_exists: replace
 
     - name: Sync Repository
-      run: chmod +x ./external-sys76.sh &&  ./external-sys76.sh
+      run: chmod +x ./external-steam.sh &&  ./external-steam.sh
 
     - name: Purge cache
       uses: jakejarvis/cloudflare-purge-action@master
