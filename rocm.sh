@@ -4,16 +4,17 @@ set -e
 # ROCm MIRROR
 mkdir -p ./output/rocm
 cd ./output/rocm
+
+# temp
+apt update
+apt upgrade -y
+# end of temp
+
 # Get package list from ROCm Pool
 wget http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages
 # Get rid of Pika sources to prevent conflicts
 rm -rf /etc/apt/sources.list.d/pika*
 rm -rf  /etc/apt/preferences.d/*pika*
-
-# temp
-apt update
-apt upgrade
-# end of temp
 
 for i in $(cat ./Packages | grep "Package: " | awk '{print $2}')
 do
