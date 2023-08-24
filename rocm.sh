@@ -4,11 +4,31 @@ set -e
 # ROCm MIRROR
 mkdir -p ./output/rocm
 cd ./output/rocm
-# Get ROCm pool
-echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy main' | sudo tee /etc/apt/sources.list.d/rocm.list
-apt update -y
+# Get package list from ROCm Pool
 wget http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages
-apt download $(cat ./Packages | grep "Package: " | awk '{print $2}' | tr '\n' ' ') -y
+# Get rid of Pika sources to prevent conflicts
+rm -rf /etc/apt/sources.list.d/pika*
+rm -rf  /etc/apt/preferences.d/*pika*
+
+for i in $(cat ./Packages | grep "Package: " | awk '{print $2}')
+do
+    # Get ROCm pool from pika
+    echo 'deb [arch=amd64 trusted=yes] https://ppa.pika-os.com/ lunar rocm' | sudo tee /etc/apt/sources.list.d/rocm-pika.list
+    apt update -y
+    apt-cache show $i | grep Version: > ./$i-pika.txt
+    rm -rf /etc/apt/sources.list.d/rocm-pika.list
+    # Get ROCm pool
+    echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy main' | sudo tee /etc/apt/sources.list.d/rocm.list
+    apt update -y
+    apt-cache show $i | grep Version: > ./$i-repo.txt
+    if [[ $(cat ./$i-pika.txt ) == $(cat ./$i-repo.txt ) ]]
+    then
+        true
+    else
+        echo $i >> pkglist.txt
+    fi
+done
+apt download $(cat ./pkglist.txt | tr '\n' ' ') -y
 # Return to ROCm MIRROR
 cd ../
 mkdir -p ./output
