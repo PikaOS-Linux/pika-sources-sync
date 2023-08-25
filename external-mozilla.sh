@@ -22,13 +22,13 @@ echo 'deb [trusted=yes] https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu 
 apt update -y --allow-unauthenticated
 
 PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu/dists/lunar/main/binary-amd64/Packages.xz)
-touch /etc/apt/preferences.d/99-external.conf
-echo 'Package: *' > /etc/apt/preferences.d/99-external.conf
-echo 'Pin: release o=LP-PPA-mozillateam' >> /etc/apt/preferences.d/99-external.conf
-echo 'Pin-Priority: 501' >> /etc/apt/preferences.d/99-external.conf
+touch /etc/apt/preferences.d/0-external.conf
+echo 'Package: *' > /etc/apt/preferences.d/0-external.conf
+echo 'Pin: release o=LP-PPA-mozillateam' >> /etc/apt/preferences.d/0-external.conf
+echo 'Pin-Priority: 2001' >> /etc/apt/preferences.d/0-external.conf
 if [ ! -z "$PPP" ]
 then
-    apt download $PPP -y
+    apt download $PPP -y --target-release 'o=LP-PPA-mozillateam'
 else
     echo "Repos are synced"
     exit 0
