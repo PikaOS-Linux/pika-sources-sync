@@ -22,6 +22,10 @@ echo 'deb [trusted=yes] https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu 
 apt update -y --allow-unauthenticated
 
 PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/mozillateam/ppa/ubuntu/dists/lunar/main/binary-amd64/Packages.xz)
+touch /etc/apt/preferences.d/99-external.conf
+echo 'Package: *' > /etc/apt/preferences.d/99-external.conf
+echo 'Pin: release o=LP-PPA-mozillateam' >> /etc/apt/preferences.d/99-external.conf
+echo 'Pin-Priority: 501' >> /etc/apt/preferences.d/99-external.conf
 if [ ! -z "$PPP" ]
 then
     apt download $PPP -y
