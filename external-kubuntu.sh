@@ -60,7 +60,7 @@ else
     sed -i "s#Components:#Components: external#" ./output/repo/conf/distributions
 fi
 
-apt remove preprepro -y
+apt remove reprepro -y
 wget -nv https://launchpad.net/ubuntu/+archive/primary/+files/reprepro_5.3.0-1.4_amd64.deb
 apt install -y ./reprepro_5.3.0-1.4_amd64.deb
 
