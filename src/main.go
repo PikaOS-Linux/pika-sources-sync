@@ -86,7 +86,7 @@ var brokenPackages = map[string]bool{
 	"libkpim5imap-data ":               true,
 	"libkpim5ldap-data ":               true,
 	"libkpim5mailimporter-data ":       true,
-	"libkpim5mailtransport-data":       true,
+	"libkpim5mailtransport-data ":      true,
 	"libkpim5akonadimime-data ":        true,
 	"libkpim5kontactinterface-data ":   true,
 	"libkpim5ksieve-data ":             true,
