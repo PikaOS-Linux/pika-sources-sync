@@ -19,8 +19,47 @@ rm -rf  /etc/apt/preferences.d/*pika*
 
 # Get Extranal WineHQ pool
 echo 'deb [trusted=yes] https://dl.winehq.org/wine-builds/ubuntu lunar main' | sudo tee /etc/apt/sources.list.d/external.list
+apt update -y
 
-PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-i386/Packages)
+# Get i386 packages list
+wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-i386/Packages -o i386-wine-pkg
+PKG_I386=$(cat i386-wine-pkg  | grep "Package: " | awk '{print $2}' | sort -u )
+touch ppp32.list
+for i in $(cat $PKG_I386)
+do
+    touch /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Pin: release o=ppa.pika-os.com' >> /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Pin-Priority: 1000' >> /etc/apt/preferences.d/0-external-sync.conf
+    apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-i386
+    rm -rf /etc/apt/preferences.d/0-external-sync.conf
+    apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-external-i386
+    if [[ $(cat $i-pika-i386) == $(cat $i-external-i386) ]]
+    then
+        echo $i >> ppp32.list
+    fi
+done
+
+# Get amd64 packages list
+wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-amd64/Packages -o amd64-wine-pkg
+PKG_AMD64=$(cat amd64-wine-pkg  | grep "Package: " | awk '{print $2}' | sort -u )
+touch ppp64.list
+for i in $(cat $PKG_AMD64)
+do
+    touch /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Pin: release o=ppa.pika-os.com' >> /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Pin-Priority: 1000' >> /etc/apt/preferences.d/0-external-sync.conf
+    apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-amd64
+    rm -rf /etc/apt/preferences.d/0-external-sync.conf
+    apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-external-amd64
+    if [[ $(cat $i-pika-amd64) == $(cat $i-external-amd64) ]]
+    then
+        echo $i >> ppp64.list
+    fi
+done
+
+PPP32=$(cat ppp32.list | tr '\n' ' ')
 if [ ! -z "$PPP32" ]
 then
     dpkg --add-architecture i386
@@ -31,7 +70,7 @@ else
     echo "i386 Repos are synced"
 fi
 
-PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-amd64/Packages)
+PPP64=$(cat ppp64.list | tr '\n' ' ')
 if [ ! -z "$PPP64" ]
 then
     apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
