@@ -36,6 +36,8 @@ do
     apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-external-i386
     if cat $i-pika-i386 | grep "^"$(cat $i-external-i386)"$"
     then
+        true
+    else
         echo $i >> ppp32.list
     fi
 done
@@ -55,6 +57,8 @@ do
     apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-external-amd64
     if cat $i-pika-amd64 | grep "^"$(cat $i-external-amd64)"$"
     then
+        true
+    else
         echo $i >> ppp64.list
     fi
 done
