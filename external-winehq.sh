@@ -25,7 +25,7 @@ apt update -y
 wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-i386/Packages -O i386-wine-pkg
 PKG_I386=$(cat i386-wine-pkg  | grep "Package: " | awk '{print $2}' | sort -u )
 touch ppp32.list
-for i in $(cat $PKG_I386)
+for i in $(echo $PKG_I386)
 do
     touch /etc/apt/preferences.d/0-external-sync.conf
     echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
@@ -44,7 +44,7 @@ done
 wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-amd64/Packages -O amd64-wine-pkg
 PKG_AMD64=$(cat amd64-wine-pkg  | grep "Package: " | awk '{print $2}' | sort -u )
 touch ppp64.list
-for i in $(cat $PKG_AMD64)
+for i in $(echo $PKG_AMD64)
 do
     touch /etc/apt/preferences.d/0-external-sync.conf
     echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
