@@ -22,7 +22,7 @@ echo 'deb [trusted=yes] https://dl.winehq.org/wine-builds/ubuntu lunar main' | s
 apt update -y
 
 # Get i386 packages list
-wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-i386/Packages -o i386-wine-pkg
+wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-i386/Packages -O i386-wine-pkg
 PKG_I386=$(cat i386-wine-pkg  | grep "Package: " | awk '{print $2}' | sort -u )
 touch ppp32.list
 for i in $(cat $PKG_I386)
@@ -41,7 +41,7 @@ do
 done
 
 # Get amd64 packages list
-wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-amd64/Packages -o amd64-wine-pkg
+wget https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-amd64/Packages -O amd64-wine-pkg
 PKG_AMD64=$(cat amd64-wine-pkg  | grep "Package: " | awk '{print $2}' | sort -u )
 touch ppp64.list
 for i in $(cat $PKG_AMD64)
