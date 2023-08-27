@@ -1,4 +1,4 @@
-name: Wipe External Pool Clean (Danger)
+name: Wipe ROCm Pool Clean (Danger)
 
 on:
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
         if_key_exists: replace
 
     - name: Sync Repository
-      run: chmod +x ./external-wipe-clean.sh &&  ./external-wipe-clean.sh
+      run: chmod +x ./rocm-wipe-clean.sh &&  ./rocm-wipe-clean.sh
 
     - name: Purge cache
       uses: jakejarvis/cloudflare-purge-action@master
