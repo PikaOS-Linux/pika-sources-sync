@@ -21,7 +21,7 @@ rm -rf  /etc/apt/preferences.d/*pika*
 echo 'deb [arch=amd64 trusted=yes] https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu lunar main' | sudo tee /etc/apt/sources.list.d/external.list
 apt update -y --allow-unauthenticated
 
-PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/dists/lunar/main/binary-amd64/Packages.xz ./ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/apps/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr ' ' '\n' | grep chromium | tr '\n' ' ')
+PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr ' ' '\n' | grep chromium | tr '\n' ' ')
 
 if [ ! -z "$PPP" ]
 then
