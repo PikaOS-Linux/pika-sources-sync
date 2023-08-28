@@ -51,6 +51,10 @@ else
     sed -i "s#Components:#Components: rocm#" ./output/repo/conf/distributions
 fi
 
+apt remove reprepro -y
+wget -nv https://launchpad.net/ubuntu/+archive/primary/+files/reprepro_5.3.0-1.4_amd64.deb
+apt install -y ./reprepro_5.3.0-1.4_amd64.deb
+
 # Add the new package to the repo
 reprepro -C rocm -V --basedir ./output/repo/ includedeb lunar ./output/*.deb
 

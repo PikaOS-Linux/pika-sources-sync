@@ -2,7 +2,7 @@
 set -e
 
 
-SHOULD_EXIT=0
+REPOS_EMPTY=0
 
 # Give correct perms to Apt version checker
 chmod 755 ./ppp
@@ -31,7 +31,7 @@ then
     apt download $WASTA_PPP -y
 else
     echo "Wasta Repos are synced"
-    export SHOULD_EXIT=1
+    export REPOS_EMPTY=1
 fi
 
 rm -rf /etc/apt/sources.list.d/external.list
@@ -46,7 +46,7 @@ then
     apt download $PAPIRUS_PPP -y
 else
     echo "Papirus Repos are synced"
-    if [[ $SHOULD_EXIT == 1 ]]
+    if [[ $REPOS_EMPTY == 1 ]]
     then
         exit 0
     fi
@@ -71,8 +71,13 @@ else
     sed -i "s#Components:#Components: external#" ./output/repo/conf/distributions
 fi
 
+apt remove reprepro -y
+wget -nv https://launchpad.net/ubuntu/+archive/primary/+files/reprepro_5.3.0-1.4_amd64.deb
+apt install -y ./reprepro_5.3.0-1.4_amd64.deb
+
 # Add the new package to the repo
 reprepro -C external -V --basedir ./output/repo/ includedeb lunar ./output/*.deb
 
 # Push the updated ppa repo to the server
 rsync -azP ./output/repo/ ferreo@direct.pika-os.com:/srv/www/pikappa/
+exit 0
