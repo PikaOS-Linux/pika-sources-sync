@@ -25,7 +25,7 @@ PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packag
 
 if [ ! -z "$PPP" ]
 then
-    apt download $PPP -y
+    apt download $PPP -y --target-release 'o=LP-PPA-xtradeb-apps'
 else
     echo "Repos are synced"
     exit 0

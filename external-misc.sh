@@ -28,7 +28,7 @@ WASTA_PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/
 
 if [ ! -z "$WASTA_PPP" ]
 then
-    apt download $WASTA_PPP -y
+    apt download $WASTA_PPP -y --target-release 'o=LP-PPA-wasta-linux-cinnamon-testing'
 else
     echo "Wasta Repos are synced"
     export REPOS_EMPTY=1
@@ -43,7 +43,7 @@ apt update -y --allow-unauthenticated
 PAPIRUS_PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/dists/lunar/main/binary-amd64/Packages.xz)
 if [ ! -z "$PAPIRUS_PPP" ]
 then
-    apt download $PAPIRUS_PPP -y
+    apt download $PAPIRUS_PPP -y --target-release 'o=LP-PPA-papirus-papirus'
 else
     echo "Papirus Repos are synced"
     if [[ $REPOS_EMPTY == 1 ]]

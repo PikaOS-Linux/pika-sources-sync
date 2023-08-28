@@ -25,7 +25,7 @@ if [ ! -z "$PPP32" ]
 then
     dpkg --add-architecture i386
     apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
-    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y
+    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=Valve Software LLC'
     rm -rfv ./*all.deb
 else
     echo "i386 Repos are synced"
@@ -35,7 +35,7 @@ PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Pack
 if [ ! -z "$PPP64" ]
 then
     apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
-    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y
+    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=Valve Software LLC'
 else
     echo "AMD64 Repos are synced"
     exit 0

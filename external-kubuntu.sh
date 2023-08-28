@@ -24,7 +24,7 @@ PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packa
 if [ ! -z "$PPP32" ]
 then
     dpkg --add-architecture i386
-    apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
+    apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated --target-release 'o=LP-PPA-kubuntu-ppa-backports'
     apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y
     rm -rfv ./*all.deb
 else
@@ -35,7 +35,7 @@ PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Pack
 if [ ! -z "$PPP64" ]
 then
     apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
-    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y
+    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=LP-PPA-kubuntu-ppa-backports'
 else
     echo "AMD64 Repos are synced"
     exit 0

@@ -26,7 +26,7 @@ PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages h
 
 if [ ! -z "$PPP" ]
 then
-    apt download $PPP -y
+    apt download $PPP -y --target-release 'o=repo.radeon.com'
 else
     echo "Repos are synced"
     exit 0

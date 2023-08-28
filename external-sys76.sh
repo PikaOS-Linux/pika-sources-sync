@@ -24,7 +24,7 @@ apt update -y --allow-unauthenticated
 PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz)
 if [ ! -z "$PPP" ]
 then
-    apt download $PPP -y
+    apt download $PPP -y --target-release 'o=LP-PPA-system76-dev-pre-stable'
 else
     echo "Repos are synced"
     exit 0
