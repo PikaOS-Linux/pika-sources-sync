@@ -111,5 +111,5 @@ var brokenPackages = map[string]bool{
 	"libkpim5tnef-data ":               true,
 	"libkpim5akonadicalendar-data ":    true,
 	"libkpim5akonadi-data ":            true,
-	"libnvidia-common-390":             true,
+	"libnvidia-common-390 ":            true,
 }
