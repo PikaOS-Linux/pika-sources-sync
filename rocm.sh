@@ -18,11 +18,11 @@ rm -rf /etc/apt/sources.list.d/pika*
 rm -rf  /etc/apt/preferences.d/*pika*
 
 # Get ROCm pool
-echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6 jammy main' | sudo tee /etc/apt/sources.list.d/rocm.list
+echo 'deb [arch=amd64 trusted=yes] https://repo.radeon.com/rocm/apt/5.6.1 jammy main' | sudo tee /etc/apt/sources.list.d/rocm.list
 wget -O - http://repo.radeon.com/rocm/rocm.gpg.key | apt-key add -
 apt update -y
 
-PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.6/dists/jammy/main/binary-amd64/Packages)
+PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.6.1/dists/jammy/main/binary-amd64/Packages)
 
 if [ ! -z "$PPP" ]
 then
