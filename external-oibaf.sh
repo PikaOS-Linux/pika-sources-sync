@@ -19,15 +19,25 @@ rm -rf  /etc/apt/preferences.d/*pika*
 
 # Get Extranal Oibaf PPA pool
 echo 'deb [arch=amd64 trusted=yes] https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu  lunar main' | sudo tee /etc/apt/sources.list.d/external.list
-apt update -y --allow-unauthenticated
 
-PPP=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr ' ' '\n' | grep -E 'meson|16|15|spirv|directx-headers' | tr '\n' ' ')
-
-if [ ! -z "$PPP" ]
+PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-i386/Packages.xz | tr ' ' '\n' | grep -E 'meson|16|15|spirv|directx-headers|libdrm' | tr '\n' ' ')
+if [ ! -z "$PPP32" ]
 then
-    apt download $PPP -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
+    dpkg --add-architecture i386
+    apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
+    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
+    rm -rfv ./*all.deb
 else
-    echo "Repos are synced"
+    echo "i386 Repos are synced"
+fi
+
+PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr ' ' '\n' | grep -E 'meson|16|15|spirv|directx-headers|libdrm' | tr '\n' ' ')
+if [ ! -z "$PPP64" ]
+then
+    apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
+    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
+else
+    echo "AMD64 Repos are synced"
     exit 0
 fi
 
