@@ -10,6 +10,12 @@ cd ./libd
 wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/libd/
 # Return to AMDGPU MIRROR
 cd ../
+# amdgpu mesa dir (depends only)
+mkdir -p ./mesa
+cd ./mesa
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/m/mesa-amdgpu/
+# Return to AMDGPU MIRROR
+cd ../
 # amdgpu proprietary dir
 mkdir -p ./proprietary
 cd ./proprietary
