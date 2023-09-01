@@ -27,7 +27,7 @@ then
     apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
     for i in $(echo $PPP32)
     do
-        apt download $i -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
+        apt download $i -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers' || true
     done
     rm -rfv ./*all.deb
 else
