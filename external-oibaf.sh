@@ -38,7 +38,7 @@ then
     apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
 else
     echo "AMD64 Repos are synced"
-    #exit 0
+    exit 0
 fi
 
 # Return to Extranal Oibaf PPA MIRROR
