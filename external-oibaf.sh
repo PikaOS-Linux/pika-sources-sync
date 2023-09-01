@@ -25,7 +25,10 @@ if [ ! -z "$PPP32" ]
 then
     dpkg --add-architecture i386
     apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
-    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
+    for i in $(echo $PPP32)
+    do
+        apt download $i -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
+    done
     rm -rfv ./*all.deb
 else
     echo "i386 Repos are synced"
