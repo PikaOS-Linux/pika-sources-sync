@@ -41,7 +41,7 @@ do
     dpkg-deb -b $i-tmp $i-fixed.deb
 done
 cd ../
-mv -v /output-tmp/*-fixed.deb ./output/
+mv -v ./output-tmp/*-fixed.deb ./output/
 
 # Sign the packages
 dpkg-sig --sign builder ./output/*.deb
