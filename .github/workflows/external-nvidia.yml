@@ -2,8 +2,6 @@ name: PikaOS Nvidia Repo Sync (External)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0  * * *'
 
 jobs:
   build:
