@@ -37,7 +37,8 @@ for i in ./*.deb
 do
     mkdir $i-tmp
     dpkg-deb -R $i $i-tmp
-    sed -i "s#$(cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2 | tr -d ' ')#$(cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2 | tr -d ' ')-pika$(date +"%Y%m%d").lunar2#" $i-tmp/DEBIAN/control
+    cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2 | tr -d ' ' > $i-version
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").lunar2#" $i-tmp/DEBIAN/control
     dpkg-deb -b $i-tmp $i-fixed.deb
 done
 cd ../
