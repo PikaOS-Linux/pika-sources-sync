@@ -29,7 +29,19 @@ wget http://repo.radeon.com/amdgpu/5.5.3/ubuntu/pool/main/a/amdgpu-dkms/amdgpu-d
 # Return to AMDGPU MIRROR
 cd ../
 mkdir -p ./output
-find . -name \*.deb -exec cp -vf {} ./output \;
+mkdir -p ./output-tmp
+find . -name \*.deb -exec cp -vf {} ./output-tmp \;
+
+cd ./output-tmp
+for i in ./*.deb
+do
+    mkdir $i-tmp
+    dpkg-deb -R $i $i-tmp
+    sed -i "s#$(cat $i-tmp/DEBIAN/control | grep "Version: ")#$(cat $i-tmp/DEBIAN/control | grep "Version: ")-pika$(date +"%Y%m%d").lunar#" $i-tmp/DEBIAN/control
+    dpkg-deb -b $i-tmp $i-fixed.deb
+done
+cd ../
+mv -v /output-tmp/*-fixed.deb ./output/
 
 # Sign the packages
 dpkg-sig --sign builder ./output/*.deb
