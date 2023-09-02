@@ -32,7 +32,10 @@ mkdir -p ./output
 find . -name \*.deb -exec cp -vf {} ./output \;
 
 # Sign the packages
-mv -v ./output/*.deb ./output/*-$(date +"%Y%m%d")-.deb
+for i in ./output/*.deb
+do
+    mv -v $i $i-$(date +"%Y%m%d").deb
+done
 dpkg-sig --sign builder ./output/*.deb
 
 # Pull down existing ppa repo db files etc
