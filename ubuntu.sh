@@ -18,7 +18,7 @@ rm -rf /etc/apt/sources.list.d/pika*
 rm -rf  /etc/apt/preferences.d/*pika*
 
 # Get ubuntu main pool
-echo 'deb http://archive.ubuntu.com/ubuntu/ lunar main' | sudo tee /etc/apt/sources.list.d/ubuntu.list
+#echo 'deb http://archive.ubuntu.com/ubuntu/ lunar main' | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
 PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/main/binary-i386/Packages.xz)
 if [ ! -z "$PPP32" ]
