@@ -17,6 +17,7 @@ apt upgrade -y
 rm -rf /etc/apt/sources.list.d/pika*
 rm -rf  /etc/apt/preferences.d/*pika*
 
+apt clean
 apt update
 
 # Get ubuntu main pool
