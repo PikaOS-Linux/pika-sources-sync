@@ -4,7 +4,7 @@ set -e
 # Give correct perms to Apt version checker
 chmod 755 ./ppp
 
-# Extranal Steam MIRROR
+# ubuntu MIRROR
 mkdir -p ./output/ubuntu
 cd ./output/ubuntu
 
@@ -17,8 +17,9 @@ apt upgrade -y
 rm -rf /etc/apt/sources.list.d/pika*
 rm -rf  /etc/apt/preferences.d/*pika*
 
+apt update
+
 # Get ubuntu main pool
-#echo 'deb http://archive.ubuntu.com/ubuntu/ lunar main' | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
 PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/main/binary-i386/Packages.xz)
 if [ ! -z "$PPP32" ]
@@ -42,7 +43,6 @@ else
 fi
 
 # Get ubuntu multiverse pool
-echo 'deb http://archive.ubuntu.com/ubuntu/ lunar multiverse' | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
 PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/multiverse/binary-i386/Packages.xz)
 if [ ! -z "$PPP32" ]
@@ -66,7 +66,6 @@ else
 fi
 
 # Get ubuntu restricted pool
-echo 'deb http://archive.ubuntu.com/ubuntu/ lunar restricted' | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
 PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/restricted/binary-i386/Packages.xz)
 if [ ! -z "$PPP32" ]
@@ -90,7 +89,6 @@ else
 fi
 
 # Get ubuntu universe pool
-echo 'deb http://archive.ubuntu.com/ubuntu/ lunar universe' | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
 PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-i386/Packages.xz)
 if [ ! -z "$PPP32" ]
