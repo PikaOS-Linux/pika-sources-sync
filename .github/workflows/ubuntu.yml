@@ -3,13 +3,13 @@ name: PikaOS Ubuntu Repo Sync (Main)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0  * * *'
+    - cron: '30 0 * * *'
 
 jobs:
   build:
     runs-on: self-hosted
     container:
-      image: ghcr.io/pikaos-linux/pika-package-container:latest
+      image: ubuntu:23.04
       volumes:
         - /proc:/proc
       options: --privileged -it
