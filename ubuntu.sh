@@ -4,9 +4,9 @@ set -e
 # Give correct perms to Apt version checker
 chmod 755 ./ppp
 
-# ubuntu MIRROR
-mkdir -p ./output/ubuntu
-cd ./output/ubuntu
+# output folders
+mkdir -p ./output/output
+cd ./output/output
 
 # temp
 apt update
@@ -107,10 +107,8 @@ else
     exit 0
 fi
 
-# Return to ubuntu MIRROR
+# Return to output
 cd ../
-mkdir -p ./output
-find . -name \*.deb -exec cp -vf {} ./output \;
 
 # Sign the packages
 for f in ./output/*.deb; do dpkg-sig --sign builder "$f"; done
