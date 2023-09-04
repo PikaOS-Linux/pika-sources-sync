@@ -13,12 +13,7 @@ apt update
 apt upgrade -y
 # end of temp
 
-#Get rid of Pika sources to prevent conflicts
-rm -rf /etc/apt/sources.list.d/pika*
-rm -rf  /etc/apt/preferences.d/*pika*
-
-apt clean
-apt update
+apt install dpkg-sig wget rsync
 
 # Get ubuntu main pool
 
