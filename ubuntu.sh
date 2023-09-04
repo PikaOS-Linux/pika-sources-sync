@@ -13,7 +13,7 @@ apt update
 apt upgrade -y
 # end of temp
 
-apt install dpkg-sig wget rsync
+apt install dpkg-sig wget rsync -y
 
 # Get ubuntu main pool
 
