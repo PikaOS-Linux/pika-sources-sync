@@ -14,6 +14,7 @@ import (
 	"github.com/klauspost/compress/gzip"
 
 	"github.com/ulikunitz/xz"
+	"pault.ag/go/debian/version"
 )
 
 func main() {
@@ -101,9 +102,13 @@ func processFile(url string) map[string]packageInfo {
 			}
 		} else {
 			if strings.HasPrefix(line, "Version: ") {
+				ver, err := version.Parse(strings.TrimPrefix(line, "Version: "))
+				if err != nil {
+					panic(err)
+				}
 				packages[currentPackage] = packageInfo{
 					Name:    currentPackage,
-					Version: strings.TrimPrefix(line, "Version: "),
+					Version: ver,
 				}
 			}
 			if strings.HasPrefix(line, "Filename: ") {
@@ -122,7 +127,7 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 	output := make(map[string]packageInfo)
 	for pack, info := range targetPackages {
 		if baseVersion, ok := basePackages[pack]; ok {
-			if baseVersion.Version != info.Version && (!is32bit || !strings.HasSuffix(info.FilePath, "all.deb")) {
+			if version.Compare(info.Version, baseVersion.Version) > 0 && (!is32bit || !strings.HasSuffix(info.FilePath, "all.deb")) {
 				output[pack] = info
 				if !download {
 					os.Stdout.WriteString(pack)
@@ -298,7 +303,7 @@ type config struct {
 
 type packageInfo struct {
 	Name     string
-	Version  string
+	Version  version.Version
 	FilePath string
 }
 
