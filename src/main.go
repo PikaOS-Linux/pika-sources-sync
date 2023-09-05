@@ -140,7 +140,7 @@ func repoAdd(path string, args string) {
 		if strings.HasSuffix(file, ".deb") {
 			fmt.Printf("adding to repo %s \n", file)
 
-			cmd := exec.Command("reprepro", args, file)
+			cmd := exec.Command("reprepro", args, path+file)
 			err := cmd.Run()
 			if err != nil {
 				panic(err)
