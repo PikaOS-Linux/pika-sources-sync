@@ -172,9 +172,10 @@ func signFiles(path string) {
 		totalCount--
 		if count < 100 && totalCount > 0 {
 			count++
-			filePath = path + " " + path + file
+			filePath = filePath + " " + path + file
 		} else {
 			count = 0
+			filePath = filePath + " " + path + file
 			signQueue <- filePath
 		}
 	}
