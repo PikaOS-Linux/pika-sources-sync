@@ -165,7 +165,7 @@ func signFiles(path string) {
 	for _, file := range files {
 		if strings.HasSuffix(file, ".deb") {
 			fmt.Printf("Signing %s \n", file)
-			cmd := exec.Command("dpkg-sig", "--sign", "builder", file)
+			cmd := exec.Command("dpkg-sig", "--sign", "builder", path+file)
 			err := cmd.Run()
 			if err != nil {
 				panic(err)
