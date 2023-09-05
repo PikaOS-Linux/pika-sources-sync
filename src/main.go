@@ -155,13 +155,12 @@ func repoAdd(path string, args string) {
 	totalCount := len(files)
 	filePaths := ""
 	for _, file := range files {
-		if count > 0 && totalCount > 0 && strings.TrimSpace(file) != "" {
+		if count > 0 && totalCount > 0 && strings.HasSuffix(file, ".deb") {
 			count--
 			totalCount--
 			filePaths = filePaths + " " + path + file
-		} else if strings.TrimSpace(filePaths) != "" {
+		} else if filePaths != "" {
 			count = 500
-			fmt.Printf("Adding %s \n", filePaths)
 			cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+filePaths)
 			out, err := cmd.CombinedOutput()
 			if err != nil {
