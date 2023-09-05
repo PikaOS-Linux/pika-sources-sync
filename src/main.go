@@ -140,12 +140,6 @@ func signFiles(path string) {
 		panic(err)
 	}
 
-	ch := make(chan bool)
-	go func() {
-		sign(ch, path+"*.deb")
-	}()
-	<-ch
-
 	signQueue := make(chan string, 10)
 	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
