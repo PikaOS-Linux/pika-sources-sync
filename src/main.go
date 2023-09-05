@@ -128,17 +128,62 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 }
 
 func signFiles(path string) {
+
+	dir, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+	defer dir.Close()
+
+	files, err := dir.Readdirnames(-1)
+	if err != nil {
+		panic(err)
+	}
+
 	ch := make(chan bool)
 	go func() {
 		sign(ch, path+"*.deb")
 	}()
 	<-ch
+
+	signQueue := make(chan string, 10)
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case path, ok := <-signQueue:
+					if !ok {
+						return
+					}
+					ch := make(chan bool)
+					go func() {
+						sign(ch, path)
+					}()
+					<-ch
+				default:
+					// No more files to sign, exit the goroutine
+					return
+				}
+			}
+		}()
+	}
+
+	for _, file := range files {
+		signQueue <- path + file
+	}
+
+	close(signQueue)
+
+	wg.Wait()
 }
 
 func sign(ch chan bool, path string) {
 	if strings.HasSuffix(path, ".deb") {
 		fmt.Printf("Signing %s \n", path)
-		cmd := exec.Command("dpkg-sig", "--sign", "builder", path)
+		cmd := exec.Command("bash -c dpkg-sig", "--sign", "builder", path)
 		err := cmd.Run()
 		if err != nil {
 			panic(err)
