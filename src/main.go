@@ -161,13 +161,13 @@ func repoAdd(path string, args string) {
 			filePaths = filePaths + " " + path + file
 		} else {
 			count = 500
-			fmt.Println("count: " + fmt.Sprint(totalCount))
 			cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+filePaths)
 			out, err := cmd.CombinedOutput()
 			if err != nil {
 				panic(string(out))
 			}
 			fmt.Printf(string(out))
+			filePaths = ""
 		}
 	}
 }
