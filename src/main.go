@@ -136,17 +136,38 @@ func repoAdd(path string, args string) {
 		panic(err)
 	}
 
-	for _, file := range files {
-		if strings.HasSuffix(file, ".deb") {
-			fmt.Printf("adding to repo %s \n", file)
-
-			cmd := exec.Command("reprepro", args, path+file)
-			err := cmd.Run()
-			if err != nil {
-				panic(err)
+	addQueue := make(chan string, 1)
+	var wg sync.WaitGroup
+	for i := 0; i < 1; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case path, ok := <-addQueue:
+					if !ok {
+						return
+					}
+					ch := make(chan bool)
+					go func() {
+						add(ch, path, args)
+					}()
+					<-ch
+				default:
+					// No more files to add, exit the goroutine
+					return
+				}
 			}
-		}
+		}()
 	}
+
+	for _, file := range files {
+		addQueue <- path + file
+	}
+
+	close(addQueue)
+
+	wg.Wait()
 }
 
 func signFiles(path string) {
@@ -162,16 +183,62 @@ func signFiles(path string) {
 		panic(err)
 	}
 
-	for _, file := range files {
-		if strings.HasSuffix(file, ".deb") {
-			fmt.Printf("Signing %s \n", file)
-			cmd := exec.Command("dpkg-sig", "--sign", "builder", path+file)
-			err := cmd.Run()
-			if err != nil {
-				panic(err)
+	signQueue := make(chan string, 10)
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case path, ok := <-signQueue:
+					if !ok {
+						return
+					}
+					ch := make(chan bool)
+					go func() {
+						sign(ch, path)
+					}()
+					<-ch
+				default:
+					// No more files to sign, exit the goroutine
+					return
+				}
 			}
+		}()
+	}
+
+	for _, file := range files {
+		signQueue <- path + file
+	}
+
+	close(signQueue)
+
+	wg.Wait()
+}
+
+func sign(ch chan bool, path string) {
+	if strings.HasSuffix(path, ".deb") {
+		fmt.Printf("Signing %s \n", path)
+		cmd := exec.Command("dpkg-sig", "--sign", "builder", path)
+		err := cmd.Run()
+		if err != nil {
+			panic(err)
 		}
 	}
+	ch <- true
+}
+
+func add(ch chan bool, path string, args string) {
+	if strings.HasSuffix(path, ".deb") {
+		fmt.Printf("Adding to repo %s \n", path)
+		cmd := exec.Command("reprepro", args, path)
+		err := cmd.Run()
+		if err != nil {
+			panic(err)
+		}
+	}
+	ch <- true
 }
 
 func download(packages map[string]packageInfo, url string, output string) {
