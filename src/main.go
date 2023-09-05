@@ -170,7 +170,7 @@ func signFiles(path string) {
 	filePath := ""
 	for _, file := range files {
 		totalCount--
-		if count < 100 && totalCount > 0 {
+		if count < 10 && totalCount > 0 {
 			count++
 			filePath = filePath + " " + path + file
 		} else {
@@ -188,7 +188,7 @@ func signFiles(path string) {
 func sign(ch chan bool, path string) {
 	if strings.HasSuffix(path, ".deb") {
 		fmt.Printf("Signing %s \n", path)
-		cmd := exec.Command("../sign.sh", "--sign", "builder", path)
+		cmd := exec.Command("dpkg-sig", "--sign", "builder", path)
 		err := cmd.Run()
 		if err != nil {
 			panic(err)
