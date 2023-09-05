@@ -151,38 +151,25 @@ func repoAdd(path string, args string) {
 		panic(err)
 	}
 
-	addQueue := make(chan string, 1)
-	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for {
-				select {
-				case path, ok := <-addQueue:
-					if !ok {
-						return
-					}
-					ch := make(chan bool)
-					go func() {
-						add(ch, path, args)
-					}()
-					<-ch
-				default:
-					// No more files to add, exit the goroutine
-					return
-				}
-			}
-		}()
-	}
-
+	count := 500
+	totalCount := len(files)
+	filePaths := ""
 	for _, file := range files {
-		addQueue <- path + file
+		if count > 0 && totalCount > 0 {
+			count--
+			totalCount--
+			filePaths = filePaths + " " + path + file
+		} else {
+			count = 500
+			fmt.Println("count: " + fmt.Sprint(totalCount))
+			cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+filePaths)
+			out, err := cmd.CombinedOutput()
+			if err != nil {
+				panic(string(out))
+			}
+			fmt.Printf(string(out))
+		}
 	}
-
-	close(addQueue)
-
-	wg.Wait()
 }
 
 func signFiles(path string) {
@@ -232,24 +219,13 @@ func signFiles(path string) {
 	wg.Wait()
 }
 
-func add(ch chan bool, path string, args string) {
-
-	fmt.Printf("Adding %s \n", path)
-	cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+path)
-	err := cmd.Run()
-	if err != nil {
-		panic(err)
-	}
-	ch <- true
-}
-
 func sign(ch chan bool, path string) {
 	if strings.HasSuffix(path, ".deb") {
 		fmt.Printf("Signing %s \n", path)
 		cmd := exec.Command("/bin/bash", "-c", "dpkg-sig", "--sign", "builder", path)
-		err := cmd.Run()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
-			panic(err)
+			panic(string(out))
 		}
 	}
 	ch <- true
