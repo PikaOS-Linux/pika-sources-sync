@@ -161,6 +161,7 @@ func repoAdd(path string, args string) {
 			filePaths = filePaths + " " + path + file
 		} else if strings.TrimSpace(filePaths) != "" {
 			count = 500
+			fmt.Printf("Adding %s \n", filePaths)
 			cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+filePaths)
 			out, err := cmd.CombinedOutput()
 			if err != nil {
