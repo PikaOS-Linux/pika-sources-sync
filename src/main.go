@@ -21,6 +21,11 @@ func main() {
 		return
 	}
 
+	if os.Args[1] == "repoadd" {
+		repoAdd(os.Args[2], os.Args[3])
+		return
+	}
+
 	config := config{
 		Source:   os.Args[1],
 		Target:   os.Args[2],
@@ -132,6 +137,53 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 	return output
 }
 
+func repoAdd(path string, args string) {
+
+	dir, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+	defer dir.Close()
+
+	files, err := dir.Readdirnames(-1)
+	if err != nil {
+		panic(err)
+	}
+
+	addQueue := make(chan string, 1)
+	var wg sync.WaitGroup
+	for i := 0; i < 1; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case path, ok := <-addQueue:
+					if !ok {
+						return
+					}
+					ch := make(chan bool)
+					go func() {
+						add(ch, path, args)
+					}()
+					<-ch
+				default:
+					// No more files to add, exit the goroutine
+					return
+				}
+			}
+		}()
+	}
+
+	for _, file := range files {
+		addQueue <- path + file
+	}
+
+	close(addQueue)
+
+	wg.Wait()
+}
+
 func signFiles(path string) {
 
 	dir, err := os.Open(path)
@@ -177,6 +229,17 @@ func signFiles(path string) {
 	close(signQueue)
 
 	wg.Wait()
+}
+
+func add(ch chan bool, path string, args string) {
+
+	fmt.Printf("Adding %s \n", path)
+	cmd := exec.Command("/bin/bash", "-c", "reprepro", args, path)
+	err := cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+	ch <- true
 }
 
 func sign(ch chan bool, path string) {
