@@ -16,8 +16,10 @@ apt upgrade -y
 apt install dpkg-sig wget rsync ssh -y
 
 # Get ubuntu main pool
+echo "Getting ubuntu main pool 32bit"
 ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/main/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 rm -rfv ./*all.deb
+echo "Getting ubuntu main pool 64bit"
 ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/main/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
 # # Get ubuntu multiverse pool
