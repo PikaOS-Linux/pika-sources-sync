@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"sync"
 
@@ -14,6 +15,16 @@ import (
 )
 
 func main() {
+	if os.Args[1] == "sign" {
+		signFiles(os.Args[2])
+		return
+	}
+
+	if os.Args[1] == "repoadd" {
+		repoAdd(os.Args[2], os.Args[3])
+		return
+	}
+
 	config := config{
 		Source:   os.Args[1],
 		Target:   os.Args[2],
@@ -111,6 +122,56 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 		}
 	}
 	return output
+}
+
+func repoAdd(path string, args string) {
+	dir, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+	defer dir.Close()
+
+	files, err := dir.Readdirnames(-1)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, file := range files {
+		if strings.HasSuffix(file, ".deb") {
+			fmt.Printf("adding to repo %s \n", file)
+
+			cmd := exec.Command("reprepro", args, file)
+			err := cmd.Run()
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
+}
+
+func signFiles(path string) {
+
+	dir, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+	defer dir.Close()
+
+	files, err := dir.Readdirnames(-1)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, file := range files {
+		if strings.HasSuffix(file, ".deb") {
+			fmt.Printf("Signing %s \n", file)
+			cmd := exec.Command("dpkg-sig", "--sign", "builder", file)
+			err := cmd.Run()
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
 }
 
 func download(packages map[string]packageInfo, url string, output string) {
