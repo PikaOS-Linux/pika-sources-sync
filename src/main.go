@@ -165,8 +165,18 @@ func signFiles(path string) {
 		}()
 	}
 
+	count := 0
+	totalCount := len(files)
+	filePath := ""
 	for _, file := range files {
-		signQueue <- path + file
+		totalCount--
+		if count < 100 && totalCount > 0 {
+			count++
+			filePath = path + " " + path + file
+		} else {
+			count = 0
+			signQueue <- filePath
+		}
 	}
 
 	close(signQueue)
