@@ -128,61 +128,11 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 }
 
 func signFiles(path string) {
-
-	dir, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
-	defer dir.Close()
-
-	files, err := dir.Readdirnames(-1)
-	if err != nil {
-		panic(err)
-	}
-
-	signQueue := make(chan string, 10)
-	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for {
-				select {
-				case path, ok := <-signQueue:
-					if !ok {
-						return
-					}
-					ch := make(chan bool)
-					go func() {
-						sign(ch, path)
-					}()
-					<-ch
-				default:
-					// No more files to sign, exit the goroutine
-					return
-				}
-			}
-		}()
-	}
-
-	count := 0
-	totalCount := len(files)
-	filePath := ""
-	for _, file := range files {
-		totalCount--
-		if count < 10 && totalCount > 0 {
-			count++
-			filePath = filePath + " " + path + file
-		} else {
-			count = 0
-			filePath = filePath + " " + path + file
-			signQueue <- filePath
-		}
-	}
-
-	close(signQueue)
-
-	wg.Wait()
+	ch := make(chan bool)
+	go func() {
+		sign(ch, path+"*.deb")
+	}()
+	<-ch
 }
 
 func sign(ch chan bool, path string) {

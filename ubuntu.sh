@@ -39,7 +39,7 @@ echo "Getting ubuntu main pool 64bit"
 
 cd ../
 
-if [ $(ls | wc -l) -l 1 ]; then
+if [ $(ls ./output/ | wc -l) -l 1 ]; then
 echo "Repos are synced"
     exit 0
 fi
