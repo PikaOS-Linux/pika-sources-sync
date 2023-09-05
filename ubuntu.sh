@@ -37,6 +37,11 @@ rm -rfv ./*all.deb
 
 cd ../
 
+if [ ! -e ./output/*.deb ]; then
+echo "Repos are synced"
+    exit 0
+fi
+
 # Sign the packages
 ../ppp sign ./output/
 
