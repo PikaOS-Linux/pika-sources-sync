@@ -36,12 +36,12 @@ rm -rfv ./*all.deb
 echo "Getting ubuntu restricted pool 64bit"
 ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/restricted/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
-# # Get ubuntu universe pool
-# echo "Getting ubuntu universe pool 32bit"
-# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
-# rm -rfv ./*all.deb
-# echo "Getting ubuntu universe pool 64bit"
-# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# Get ubuntu universe pool
+echo "Getting ubuntu universe pool 32bit"
+../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+rm -rfv ./*all.deb
+echo "Getting ubuntu universe pool 64bit"
+../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages.gz http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
 cd ../
 
