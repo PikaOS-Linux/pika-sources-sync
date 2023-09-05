@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"compress/gzip"
 	"fmt"
 	"io"
 	"log"
@@ -53,6 +54,13 @@ func processFile(url string) map[string]packageInfo {
 		r, err := xz.NewReader(resp.Body)
 		if err != nil {
 			log.Fatalf("xz error %s", err)
+		}
+		rdr = r
+	}
+	if strings.HasSuffix(url, ".gz") {
+		r, err := gzip.NewReader(resp.Body)
+		if err != nil {
+			log.Fatalf("gzip error %s", err)
 		}
 		rdr = r
 	}
