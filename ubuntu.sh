@@ -20,20 +20,20 @@ apt install dpkg-sig wget rsync -y
 rm -rfv ./*all.deb
 ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/main/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
-# Get ubuntu multiverse pool
-../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/multiverse/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
-rm -rfv ./*all.deb
-../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/multiverse/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# # Get ubuntu multiverse pool
+# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/multiverse/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# rm -rfv ./*all.deb
+# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/multiverse/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
-# Get ubuntu restricted pool
-../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/restricted/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
-rm -rfv ./*all.deb
-../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/restricted/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# # Get ubuntu restricted pool
+# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/restricted/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# rm -rfv ./*all.deb
+# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/restricted/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
-# Get ubuntu universe pool
-../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
-rm -rfv ./*all.deb
-../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# # Get ubuntu universe pool
+# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
+# rm -rfv ./*all.deb
+# ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-amd64/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/universe/binary-amd64/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
 
 cd ../
 
