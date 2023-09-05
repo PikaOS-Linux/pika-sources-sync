@@ -233,11 +233,11 @@ func sign(ch chan bool, path string) {
 
 func download(packages map[string]packageInfo, url string, output string) {
 	// Create a buffered channel to store the packages to be downloaded
-	packageQueue := make(chan packageInfo, 10)
+	packageQueue := make(chan packageInfo, 24)
 
 	// Create a worker pool with 10 workers
 	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 24; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
