@@ -336,4 +336,5 @@ var brokenPackages = map[string]bool{
 	"libkpim5akonadi-data ":            true,
 	"libnvidia-common-390 ":            true,
 	"libnvidia-common-530 ":            true,
+	"midisport-firmware ":              true,
 }
