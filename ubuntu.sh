@@ -55,8 +55,8 @@ apt remove reprepro -y
 wget -nv https://launchpad.net/ubuntu/+archive/primary/+files/reprepro_5.3.0-1.4_amd64.deb
 apt install -y ./reprepro_5.3.0-1.4_amd64.deb
 
-# Add the new package to the repo
-../ppp repoadd ./output/ "-C ubuntu -V --basedir ./output/repo/ includedeb lunar"
+# Add the new packages to the repo
+reprepro -C ubuntu -V --basedir ./output/repo/ includedeb lunar ./output/*.deb
 
 # Push the updated ppa repo to the server
 rsync -azP ./output/repo/ ferreo@direct.pika-os.com:/srv/www/pikappa/
