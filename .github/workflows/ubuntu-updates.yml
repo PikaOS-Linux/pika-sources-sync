@@ -1,0 +1,49 @@
+name: PikaOS Ubuntu Repo Sync (Updates)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 0 * * *'
+
+jobs:
+  build:
+    runs-on: self-hosted
+    container:
+      image: ubuntu:23.04
+      volumes:
+        - /proc:/proc
+      options: --privileged -it
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: APT
+      run: apt update && apt install gnupg -y
+    
+    - name: Import GPG key
+      id: import_gpg
+      uses: crazy-max/ghaction-import-gpg@v5
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        name: id_rsa
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        if_key_exists: replace
+
+    - name: Sync Repository
+      run: chmod +x ./ubuntu-updates.sh &&  ./ubuntu-updates.sh
+
+    - name: Purge cache
+      uses: jakejarvis/cloudflare-purge-action@master
+      env:
+        # Zone is required by both authentication methods
+        CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+
+        CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+        PURGE_URLS: ${{ vars.PURGE_URLS }}
+        
