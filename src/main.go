@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"compress/gzip"
 	"fmt"
 	"io"
 	"log"
@@ -11,6 +10,8 @@ import (
 	"os/exec"
 	"strings"
 	"sync"
+
+	"github.com/klauspost/compress/gzip"
 
 	"github.com/ulikunitz/xz"
 )
@@ -152,7 +153,7 @@ func repoAdd(path string, args string) {
 
 	addQueue := make(chan string, 1)
 	var wg sync.WaitGroup
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 10; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
