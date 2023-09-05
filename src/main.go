@@ -234,7 +234,7 @@ func signFiles(path string) {
 func add(ch chan bool, path string, args string) {
 
 	fmt.Printf("Adding %s \n", path)
-	cmd := exec.Command("/bin/bash", "-c", "reprepro", args, path)
+	cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+path)
 	err := cmd.Run()
 	if err != nil {
 		panic(err)
