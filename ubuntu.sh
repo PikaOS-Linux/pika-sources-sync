@@ -13,7 +13,7 @@ apt update
 apt upgrade -y
 # end of temp
 
-apt install dpkg-sig wget rsync -y
+apt install dpkg-sig wget rsync ssh -y
 
 # Get ubuntu main pool
 ../../ppp https://ppa.pika-os.com/dists/lunar/ubuntu/binary-i386/Packages http://archive.ubuntu.com/ubuntu/dists/lunar/main/binary-i386/Packages.xz http://archive.ubuntu.com/ubuntu/ ./
