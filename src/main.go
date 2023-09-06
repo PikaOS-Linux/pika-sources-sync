@@ -152,7 +152,7 @@ func download(packages map[string]packageInfo, url string, output string) {
 					rdr := io.Reader(resp.Body)
 					opt := strings.Split(pack.FilePath, "/")[len(strings.Split(pack.FilePath, "/"))-1]
 					if opt == "" {
-						opt = pack.Name + ".deb"
+						opt = strings.TrimSpace(pack.Name) + ".deb"
 					}
 					path := output + opt
 					file, err := os.Create(path)
