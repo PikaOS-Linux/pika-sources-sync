@@ -7,6 +7,8 @@ chmod 755 ./ppp
 # output folders
 mkdir -p ./output/incoming
 
+cd ./output
+
 # temp
 apt update
 apt upgrade -y
