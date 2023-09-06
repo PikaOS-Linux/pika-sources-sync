@@ -60,6 +60,10 @@ else
     sed -i "s#Components:#Components: ubuntu#" ./output/repo/conf/distributions
 fi
 
+apt remove reprepro -y
+wget -nv https://launchpad.net/ubuntu/+archive/primary/+files/reprepro_5.3.0-1.4_amd64.deb
+apt install -y ./reprepro_5.3.0-1.4_amd64.deb
+
 # Add the new packages to the repo
 ../ppp repoadd ./output/ "--keepunusednewfiles --keepunreferencedfiles -C ubuntu -V --ignore=missingfield --basedir ./output/repo/ includedeb lunar"
 

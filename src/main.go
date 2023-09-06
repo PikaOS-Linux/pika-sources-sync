@@ -32,7 +32,6 @@ func main() {
 		Source:   os.Args[1],
 		Target:   os.Args[2],
 		Download: false,
-		Is32bit:  false,
 	}
 
 	if len(os.Args) > 3 {
@@ -41,14 +40,10 @@ func main() {
 		config.Output = os.Args[4]
 	}
 
-	if strings.Contains(config.Source, "i386") {
-		config.Is32bit = true
-	}
-
 	basePackages := processFile(config.Source)
 	targetPackages := processFile(config.Target)
 
-	changed := compare(basePackages, targetPackages, config.Download, config.Is32bit)
+	changed := compare(basePackages, targetPackages, config.Download)
 	if config.Download {
 		download(changed, config.DlUrl, config.Output)
 	}
@@ -123,17 +118,17 @@ func processFile(url string) map[string]packageInfo {
 	return packages
 }
 
-func compare(basePackages map[string]packageInfo, targetPackages map[string]packageInfo, download bool, is32bit bool) map[string]packageInfo {
+func compare(basePackages map[string]packageInfo, targetPackages map[string]packageInfo, download bool) map[string]packageInfo {
 	output := make(map[string]packageInfo)
 	for pack, info := range targetPackages {
 		if baseVersion, ok := basePackages[pack]; ok {
-			if version.Compare(info.Version, baseVersion.Version) > 0 && (!is32bit || !strings.HasSuffix(info.FilePath, "all.deb")) {
+			if version.Compare(info.Version, baseVersion.Version) > 0 {
 				output[pack] = info
 				if !download {
 					os.Stdout.WriteString(pack)
 				}
 			}
-		} else if !is32bit || !strings.HasSuffix(info.FilePath, "all.deb") {
+		} else {
 			output[pack] = info
 			if !download {
 				os.Stdout.WriteString(pack)
@@ -298,7 +293,6 @@ type config struct {
 	Download bool
 	DlUrl    string
 	Output   string
-	Is32bit  bool
 }
 
 type packageInfo struct {
