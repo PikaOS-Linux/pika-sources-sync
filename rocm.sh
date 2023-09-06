@@ -37,26 +37,11 @@ cd ../
 mkdir -p ./output
 find . -name \*.deb -exec cp -vf {} ./output \;
 
-# Sign the packages
-dpkg-sig --sign builder ./output/*.deb
+# send debs to server
+rsync -azP ./output/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
-# Pull down existing ppa repo db files etc
-rsync -azP --exclude '*.deb' ferreo@direct.pika-os.com:/srv/www/pikappa/ ./output/repo
+# add debs to repo
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-rocm /srv/www/incoming/'
 
-# Check if the rocm component exists
-if cat ./output/repo/conf/distributions | grep Components: | grep rocm
-then
-    true
-else
-    sed -i "s#Components:#Components: rocm#" ./output/repo/conf/distributions
-fi
-
-apt remove reprepro -y
-wget -nv https://launchpad.net/ubuntu/+archive/primary/+files/reprepro_5.3.0-1.4_amd64.deb
-apt install -y ./reprepro_5.3.0-1.4_amd64.deb
-
-# Add the new package to the repo
-reprepro -C rocm -V --basedir ./output/repo/ includedeb lunar ./output/*.deb
-
-# Push the updated ppa repo to the server
-rsync -azP ./output/repo/ ferreo@direct.pika-os.com:/srv/www/pikappa/
+# publish the repo
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite lunar filesystem:pikarepo:'
