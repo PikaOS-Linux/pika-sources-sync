@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"strings"
 	"sync"
 
@@ -18,16 +17,6 @@ import (
 )
 
 func main() {
-	if os.Args[1] == "sign" {
-		signFiles(os.Args[2])
-		return
-	}
-
-	if os.Args[1] == "repoadd" {
-		repoAdd(os.Args[2], os.Args[3])
-		return
-	}
-
 	config := config{
 		Source:   os.Args[1],
 		Target:   os.Args[2],
@@ -50,7 +39,6 @@ func main() {
 }
 
 func processFile(url string) map[string]packageInfo {
-
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
@@ -138,99 +126,6 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 	return output
 }
 
-func repoAdd(path string, args string) {
-
-	dir, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
-	defer dir.Close()
-
-	files, err := dir.Readdirnames(-1)
-	if err != nil {
-		panic(err)
-	}
-
-	count := 500
-	totalCount := len(files)
-	filePaths := ""
-	for _, file := range files {
-		if count > 0 && totalCount > 0 && strings.HasSuffix(file, ".deb") {
-			count--
-			totalCount--
-			filePaths = filePaths + " " + path + file
-		} else if filePaths != "" {
-			count = 500
-			cmd := exec.Command("/bin/bash", "-c", "reprepro "+args+" "+filePaths)
-			out, err := cmd.CombinedOutput()
-			if err != nil {
-				panic(string(out))
-			}
-			fmt.Printf(string(out))
-			filePaths = ""
-		}
-	}
-}
-
-func signFiles(path string) {
-
-	dir, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
-	defer dir.Close()
-
-	files, err := dir.Readdirnames(-1)
-	if err != nil {
-		panic(err)
-	}
-
-	signQueue := make(chan string, 10)
-	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for {
-				select {
-				case path, ok := <-signQueue:
-					if !ok {
-						return
-					}
-					ch := make(chan bool)
-					go func() {
-						sign(ch, path)
-					}()
-					<-ch
-				default:
-					// No more files to sign, exit the goroutine
-					return
-				}
-			}
-		}()
-	}
-
-	for _, file := range files {
-		signQueue <- path + file
-	}
-
-	close(signQueue)
-
-	wg.Wait()
-}
-
-func sign(ch chan bool, path string) {
-	if strings.HasSuffix(path, ".deb") {
-		fmt.Printf("Signing %s \n", path)
-		cmd := exec.Command("/bin/bash", "-c", "dpkg-sig", "--sign", "builder", path)
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			panic(string(out))
-		}
-	}
-	ch <- true
-}
-
 func download(packages map[string]packageInfo, url string, output string) {
 	// Create a buffered channel to store the packages to be downloaded
 	packageQueue := make(chan packageInfo, 24)
@@ -255,7 +150,7 @@ func download(packages map[string]packageInfo, url string, output string) {
 					}
 					defer resp.Body.Close()
 					rdr := io.Reader(resp.Body)
-					path := output + strings.Split(pack.FilePath, "/")[len(strings.Split(pack.FilePath, "/"))-1]
+					path := output + pack.Name
 					file, err := os.Create(path)
 					if err != nil {
 						fmt.Printf("Failed to create file %s: %v \n", path, err)
