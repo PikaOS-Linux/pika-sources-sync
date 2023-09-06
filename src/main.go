@@ -151,9 +151,6 @@ func download(packages map[string]packageInfo, url string, output string) {
 					defer resp.Body.Close()
 					rdr := io.Reader(resp.Body)
 					opt := strings.Split(pack.FilePath, "/")[len(strings.Split(pack.FilePath, "/"))-1]
-					if opt == "" {
-						opt = strings.TrimSpace(pack.Name) + ".deb"
-					}
 					path := output + opt
 					file, err := os.Create(path)
 					if err != nil {
@@ -235,4 +232,5 @@ var brokenPackages = map[string]bool{
 	"libnvidia-common-390 ":            true,
 	"libnvidia-common-530 ":            true,
 	"midisport-firmware ":              true,
+	"librust-winapi-dev ":              true,
 }
