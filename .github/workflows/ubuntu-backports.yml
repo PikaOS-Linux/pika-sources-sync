@@ -39,7 +39,7 @@ jobs:
       run: chmod +x ./ubuntu-backports.sh &&  ./ubuntu-backports.sh
 
     - name: Purge cache
-      uses: jakejarvis/cloudflare-purge-action@master
+      uses: strrife/cloudflare-chunked-purge-action@master
       env:
         # Zone is required by both authentication methods
         CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}

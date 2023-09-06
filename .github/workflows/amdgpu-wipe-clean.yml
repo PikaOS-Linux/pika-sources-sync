@@ -34,7 +34,7 @@ jobs:
       run: chmod +x ./amdgpu-wipe-clean.sh &&  ./amdgpu-wipe-clean.sh
 
     - name: Purge cache
-      uses: jakejarvis/cloudflare-purge-action@master
+      uses: strrife/cloudflare-chunked-purge-action@master
       env:
         # Zone is required by both authentication methods
         CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}

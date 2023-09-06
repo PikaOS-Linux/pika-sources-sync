@@ -34,7 +34,7 @@ jobs:
       run: chmod +x ./rocm-wipe-clean.sh &&  ./rocm-wipe-clean.sh
 
     - name: Purge cache
-      uses: jakejarvis/cloudflare-purge-action@master
+      uses: strrife/cloudflare-chunked-purge-action@master
       env:
         # Zone is required by both authentication methods
         CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
