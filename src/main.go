@@ -150,7 +150,11 @@ func download(packages map[string]packageInfo, url string, output string) {
 					}
 					defer resp.Body.Close()
 					rdr := io.Reader(resp.Body)
-					path := output + pack.Name
+					opt := strings.Split(pack.FilePath, "/")[len(strings.Split(pack.FilePath, "/"))-1]
+					if opt == "" {
+						opt = pack.Name + ".deb"
+					}
+					path := output + opt
 					file, err := os.Create(path)
 					if err != nil {
 						fmt.Printf("Failed to create file %s: %v \n", path, err)
