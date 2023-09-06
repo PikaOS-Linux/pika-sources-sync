@@ -63,45 +63,44 @@ func processFile(url string) map[string]packageInfo {
 	packages := make(map[string]packageInfo)
 	var currentPackage string
 	scanner := bufio.NewScanner(rdr)
+	const maxCapacity = 4096 * 4096
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+
 	for scanner.Scan() {
 		line := scanner.Text()
 
+		if strings.HasPrefix(line, "Package: ") {
+			pkName := strings.TrimPrefix(line, "Package: ") + " "
+			_, broken := brokenPackages[pkName]
+			if !broken {
+				currentPackage = pkName
+				packages[currentPackage] = packageInfo{
+					Name: pkName,
+				}
+			} else {
+				currentPackage = ""
+			}
+		} else if strings.HasPrefix(line, "Version: ") && currentPackage != "" {
+			ver, err := version.Parse(strings.TrimPrefix(line, "Version: "))
+			if err != nil {
+				panic(err)
+			}
+			packages[currentPackage] = packageInfo{
+				Name:    currentPackage,
+				Version: ver,
+			}
+		} else if strings.HasPrefix(line, "Filename: ") && currentPackage != "" {
+			packages[currentPackage] = packageInfo{
+				Name:     currentPackage,
+				Version:  packages[currentPackage].Version,
+				FilePath: strings.TrimPrefix(line, "Filename: "),
+			}
+		}
 		if line == "" {
 			currentPackage = ""
 		}
 
-		if currentPackage == "" {
-			if strings.HasPrefix(line, "Package: ") {
-				pkName := strings.TrimPrefix(line, "Package: ") + " "
-				_, broken := brokenPackages[pkName]
-				if !broken {
-					currentPackage = pkName
-					packages[currentPackage] = packageInfo{
-						Name: pkName,
-					}
-				} else {
-					currentPackage = ""
-				}
-			}
-		} else {
-			if strings.HasPrefix(line, "Version: ") {
-				ver, err := version.Parse(strings.TrimPrefix(line, "Version: "))
-				if err != nil {
-					panic(err)
-				}
-				packages[currentPackage] = packageInfo{
-					Name:    currentPackage,
-					Version: ver,
-				}
-			}
-			if strings.HasPrefix(line, "Filename: ") {
-				packages[currentPackage] = packageInfo{
-					Name:     currentPackage,
-					Version:  packages[currentPackage].Version,
-					FilePath: strings.TrimPrefix(line, "Filename: "),
-				}
-			}
-		}
 	}
 	return packages
 }
@@ -110,7 +109,7 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 	output := make(map[string]packageInfo)
 	for pack, info := range targetPackages {
 		if baseVersion, ok := basePackages[pack]; ok {
-			if version.Compare(info.Version, baseVersion.Version) > 0 {
+			if version.Compare(info.Version, baseVersion.Version) != 0 {
 				output[pack] = info
 				if !download {
 					os.Stdout.WriteString(pack)
@@ -232,5 +231,4 @@ var brokenPackages = map[string]bool{
 	"libnvidia-common-390 ":            true,
 	"libnvidia-common-530 ":            true,
 	"midisport-firmware ":              true,
-	"librust-winapi-dev ":              true,
 }
