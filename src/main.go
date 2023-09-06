@@ -109,7 +109,7 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 	output := make(map[string]packageInfo)
 	for pack, info := range targetPackages {
 		if baseVersion, ok := basePackages[pack]; ok {
-			if version.Compare(info.Version, baseVersion.Version) != 0 {
+			if version.Compare(info.Version, baseVersion.Version) > 0 {
 				output[pack] = info
 				if !download {
 					os.Stdout.WriteString(pack)
