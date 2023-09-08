@@ -1,14 +1,16 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"ppp/v2/deb"
 	"strings"
 	"sync"
+
+	"compress/bzip2"
 
 	"github.com/klauspost/compress/gzip"
 
@@ -45,6 +47,10 @@ func processFile(url string) map[string]packageInfo {
 	}
 	defer resp.Body.Close()
 	rdr := io.Reader(resp.Body)
+	if strings.HasSuffix(url, ".bz2") {
+		r := bzip2.NewReader(resp.Body)
+		rdr = r
+	}
 	if strings.HasSuffix(url, ".xz") {
 		r, err := xz.NewReader(resp.Body)
 		if err != nil {
@@ -61,47 +67,38 @@ func processFile(url string) map[string]packageInfo {
 	}
 
 	packages := make(map[string]packageInfo)
-	var currentPackage string
-	scanner := bufio.NewScanner(rdr)
-	const maxCapacity = 4096 * 4096
-	buf := make([]byte, maxCapacity)
-	scanner.Buffer(buf, maxCapacity)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if strings.HasPrefix(line, "Package: ") {
-			pkName := strings.TrimPrefix(line, "Package: ") + " "
-			_, broken := brokenPackages[pkName]
-			if !broken {
-				currentPackage = pkName
-				packages[currentPackage] = packageInfo{
-					Name: pkName,
-				}
-			} else {
-				currentPackage = ""
-			}
-		} else if strings.HasPrefix(line, "Version: ") && currentPackage != "" {
-			ver, err := version.Parse(strings.TrimPrefix(line, "Version: "))
-			if err != nil {
-				panic(err)
-			}
-			packages[currentPackage] = packageInfo{
-				Name:    currentPackage,
-				Version: ver,
-			}
-		} else if strings.HasPrefix(line, "Filename: ") && currentPackage != "" {
-			packages[currentPackage] = packageInfo{
-				Name:     currentPackage,
-				Version:  packages[currentPackage].Version,
-				FilePath: strings.TrimPrefix(line, "Filename: "),
-			}
+	sreader := deb.NewControlFileReader(rdr, false, false)
+	for {
+		stanza, err := sreader.ReadStanza()
+		if err != nil {
+			panic(err)
 		}
-		if line == "" {
-			currentPackage = ""
+		if stanza == nil {
+			break
 		}
 
+		_, broken := brokenPackages[stanza["Package"]]
+		if broken {
+			continue
+		}
+
+		ver, err := version.Parse(stanza["Version"])
+		if err != nil {
+			panic(err)
+		}
+
+		existingPackage, alreadyExists := packages[stanza["Package"]]
+		if alreadyExists && version.Compare(ver, existingPackage.Version) <= 0 {
+			continue
+		}
+
+		packages[stanza["Package"]] = packageInfo{
+			Name:     stanza["Package"],
+			Version:  ver,
+			FilePath: stanza["Filename"],
+		}
 	}
+
 	return packages
 }
 
@@ -112,13 +109,13 @@ func compare(basePackages map[string]packageInfo, targetPackages map[string]pack
 			if version.Compare(info.Version, baseVersion.Version) > 0 {
 				output[pack] = info
 				if !download {
-					os.Stdout.WriteString(pack)
+					os.Stdout.WriteString(pack + " ")
 				}
 			}
 		} else {
 			output[pack] = info
 			if !download {
-				os.Stdout.WriteString(pack)
+				os.Stdout.WriteString(pack + " ")
 			}
 		}
 	}
@@ -197,38 +194,38 @@ type packageInfo struct {
 }
 
 var brokenPackages = map[string]bool{
-	"libkpim5mbox-data ":               true,
-	"libkpim5identitymanagement-data ": true,
-	"libkpim5libkdepim-data ":          true,
-	"libkpim5imap-data ":               true,
-	"libkpim5ldap-data ":               true,
-	"libkpim5mailimporter-data ":       true,
-	"libkpim5mailtransport-data ":      true,
-	"libkpim5akonadimime-data ":        true,
-	"libkpim5kontactinterface-data ":   true,
-	"libkpim5ksieve-data ":             true,
-	"libkpim5textedit-data ":           true,
-	"libk3b-data ":                     true,
-	"libkpim5eventviews-data ":         true,
-	"libkpim5incidenceeditor-data ":    true,
-	"libkpim5calendarsupport-data ":    true,
-	"libkpim5calendarutils-data ":      true,
-	"libkpim5grantleetheme-data ":      true,
-	"libkpim5pkpass-data ":             true,
-	"libkpim5gapi-data ":               true,
-	"libkpim5akonadisearch-data ":      true,
-	"libkpim5gravatar-data ":           true,
-	"libkpim5akonadicontact-data ":     true,
-	"libkpim5akonadinotes-data ":       true,
-	"libkpim5libkleo-data ":            true,
-	"plasma-mobile-tweaks ":            true,
-	"libkpim5mime-data ":               true,
-	"libkf5textaddons-data ":           true,
-	"libkpim5smtp-data ":               true,
-	"libkpim5tnef-data ":               true,
-	"libkpim5akonadicalendar-data ":    true,
-	"libkpim5akonadi-data ":            true,
-	"libnvidia-common-390 ":            true,
-	"libnvidia-common-530 ":            true,
-	"midisport-firmware ":              true,
+	"libkpim5mbox-data":               true,
+	"libkpim5identitymanagement-data": true,
+	"libkpim5libkdepim-data":          true,
+	"libkpim5imap-data":               true,
+	"libkpim5ldap-data":               true,
+	"libkpim5mailimporter-data":       true,
+	"libkpim5mailtransport-data":      true,
+	"libkpim5akonadimime-data":        true,
+	"libkpim5kontactinterface-data":   true,
+	"libkpim5ksieve-data":             true,
+	"libkpim5textedit-data":           true,
+	"libk3b-data":                     true,
+	"libkpim5eventviews-data":         true,
+	"libkpim5incidenceeditor-data":    true,
+	"libkpim5calendarsupport-data":    true,
+	"libkpim5calendarutils-data":      true,
+	"libkpim5grantleetheme-data":      true,
+	"libkpim5pkpass-data":             true,
+	"libkpim5gapi-data":               true,
+	"libkpim5akonadisearch-data":      true,
+	"libkpim5gravatar-data":           true,
+	"libkpim5akonadicontact-data":     true,
+	"libkpim5akonadinotes-data":       true,
+	"libkpim5libkleo-data":            true,
+	"plasma-mobile-tweaks":            true,
+	"libkpim5mime-data":               true,
+	"libkf5textaddons-data":           true,
+	"libkpim5smtp-data":               true,
+	"libkpim5tnef-data":               true,
+	"libkpim5akonadicalendar-data":    true,
+	"libkpim5akonadi-data":            true,
+	"libnvidia-common-390":            true,
+	"libnvidia-common-530":            true,
+	"midisport-firmware":              true,
 }
