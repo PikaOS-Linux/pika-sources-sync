@@ -16,6 +16,18 @@ cd ./mesa
 wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/amdgpu/23.20/amdgpu/ubuntu/pool/main/m/mesa-amdgpu/
 # Return to AMDGPU MIRROR
 cd ../
+# amdgpu wayland dir (depends only)
+mkdir -p ./wayland-amdgpu
+cd ./wayland-amdgpu
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/amdgpu/23.20/amdgpu/ubuntu/pool/main/w/wayland-amdgpu/
+# Return to AMDGPU MIRROR
+cd ../
+# amdgpu wayland protocols dir (depends only)
+mkdir -p ./wayland-protocols-amdgpu
+cd ./wayland-protocols-amdgpu
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/amdgpu/23.20/amdgpu/ubuntu/pool/main/w/wayland-protocols-amdgpu/
+# Return to AMDGPU MIRROR
+cd ../
 # amdgpu proprietary dir
 mkdir -p ./proprietary
 cd ./proprietary
