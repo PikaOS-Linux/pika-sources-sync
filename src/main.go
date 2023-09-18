@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"ppp/v2/deb"
-	"slices"
 	"strings"
 	"sync"
 
@@ -83,7 +82,7 @@ func processFile(url string, config config) map[string]packageInfo {
 			break
 		}
 
-		if len(config.Match) > 0 && !slices.Contains(config.Match, stanza["Package"]) {
+		if len(config.Match) > 0 && !nameContains(stanza["Package"], config.Match) {
 			continue
 		}
 
@@ -110,6 +109,15 @@ func processFile(url string, config config) map[string]packageInfo {
 	}
 
 	return packages
+}
+
+func nameContains(name string, match []string) bool {
+	for _, m := range match {
+		if strings.Contains(name, m) {
+			return true
+		}
+	}
+	return false
 }
 
 func compare(basePackages map[string]packageInfo, targetPackages map[string]packageInfo, download bool) map[string]packageInfo {
