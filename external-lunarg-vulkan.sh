@@ -4,9 +4,9 @@ set -e
 # Give correct perms to Apt version checker
 chmod 755 ./ppp
 
-# LunarG Vulkan SDK MIRROR
-mkdir -p ./output/lunarg
-cd ./output/lunarg
+# Extranal XtraDEB PPA MIRROR
+mkdir -p ./output
+cd ./output
 
 ../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://packages.lunarg.com/vulkan/dists/jammy/main/binary-amd64/Packages https://packages.lunarg.com/vulkan/ ./
 
