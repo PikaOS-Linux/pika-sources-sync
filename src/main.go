@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"ppp/v2/deb"
+	"slices"
 	"strings"
 	"sync"
 
@@ -23,6 +24,7 @@ func main() {
 		Source:   os.Args[1],
 		Target:   os.Args[2],
 		Download: false,
+		Match:    make([]string, 0),
 	}
 
 	if len(os.Args) > 3 {
@@ -31,8 +33,12 @@ func main() {
 		config.Output = os.Args[4]
 	}
 
-	basePackages := processFile(config.Source)
-	targetPackages := processFile(config.Target)
+	if len(os.Args) > 5 {
+		config.Match = strings.Split(os.Args[5], ",")
+	}
+
+	basePackages := processFile(config.Source, config)
+	targetPackages := processFile(config.Target, config)
 
 	changed := compare(basePackages, targetPackages, config.Download)
 	if config.Download {
@@ -40,7 +46,7 @@ func main() {
 	}
 }
 
-func processFile(url string) map[string]packageInfo {
+func processFile(url string, config config) map[string]packageInfo {
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
@@ -75,6 +81,10 @@ func processFile(url string) map[string]packageInfo {
 		}
 		if stanza == nil {
 			break
+		}
+
+		if len(config.Match) > 0 && !slices.Contains(config.Match, stanza["Package"]) {
+			continue
 		}
 
 		_, broken := brokenPackages[stanza["Package"]]
@@ -185,6 +195,7 @@ type config struct {
 	Download bool
 	DlUrl    string
 	Output   string
+	Match    []string
 }
 
 type packageInfo struct {
