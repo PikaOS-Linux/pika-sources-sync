@@ -51,7 +51,7 @@ do
     dpkg-deb -R $i $i-tmp
     cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
     sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").lunar3#g" $i-tmp/DEBIAN/control
-    dpkg-deb -b $i-tmp $i-fixed-$(date +"%Y%m%d").deb
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-fixed.deb
 done
 cd ../
 mv -v ./output-tmp/*-fixed.deb ./output/
