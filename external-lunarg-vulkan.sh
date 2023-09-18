@@ -8,7 +8,7 @@ chmod 755 ./ppp
 mkdir -p ./output
 cd ./output
 
-../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://packages.lunarg.com/vulkan/dists/jammy/main/binary-amd64/Packages https://packages.lunarg.com/vulkan/ ./
+../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://packages.lunarg.com/vulkan/dists/jammy/main/binary-i386/Packages https://packages.lunarg.com/vulkan/ ./
 
 ../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://packages.lunarg.com/vulkan/dists/jammy/main/binary-amd64/Packages https://packages.lunarg.com/vulkan/ ./
 
