@@ -43,8 +43,7 @@ echo "Getting ubuntu universe pool 64bit"
 cd ../
 
 if [ $(ls ./output/ | wc -l) -lt 1 ]; then
-echo "Repos are synced"
-    exit 0
+    echo "Lunar Repos are synced"
 fi
 
 # send debs to server
