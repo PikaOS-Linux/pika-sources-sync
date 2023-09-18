@@ -89,7 +89,7 @@ echo "Getting ubuntu universe pool 64bit"
 cd ../
 
 if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
-echo "Repos are synced"
+echo "Mantic repos are synced"
     exit 0
 fi
 
