@@ -37,7 +37,7 @@ cd ./manticoutput
 
 cd ../
 
-if [ $(ls ./output/ | wc -l) -lt 1 ]; then
+if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
     echo "Mantic repos are synced"
     exit 0
 fi
