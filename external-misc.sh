@@ -50,3 +50,6 @@ ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-
 
 # publish the repo
 ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
+
+# republish lunar to get rid of hash clashes for same version
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite lunar filesystem:pikarepo:'
