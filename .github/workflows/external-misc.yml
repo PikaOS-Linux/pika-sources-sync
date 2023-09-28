@@ -36,7 +36,7 @@ jobs:
       run: chmod +x ./external-misc.sh &&  ./external-misc.sh
 
     - name: Purge cache
-      uses: strrife/cloudflare-chunked-purge-action@master
+      uses: jakejarvis/cloudflare-purge-action@master
       env:
         # Zone is required by both authentication methods
         CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
