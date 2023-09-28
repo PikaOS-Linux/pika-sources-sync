@@ -29,7 +29,7 @@ for i in $(echo $PKG_I386)
 do
     touch /etc/apt/preferences.d/0-external-sync.conf
     echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
-    echo 'Pin: release o=ppa.pika-os.com' >> /etc/apt/preferences.d/0-external-sync.conf
+    echo 'Pin: release c=main' >> /etc/apt/preferences.d/0-external-sync.conf
     echo 'Pin-Priority: 1000' >> /etc/apt/preferences.d/0-external-sync.conf
     apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-i386
     rm -rf /etc/apt/preferences.d/0-external-sync.conf
