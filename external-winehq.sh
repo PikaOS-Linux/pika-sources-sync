@@ -5,8 +5,8 @@ set -e
 chmod 755 ./ppp
 
 # Extranal WineHQ MIRROR
-mkdir -p ./output/external
-cd ./output/external
+mkdir -p ./manticoutput
+cd ./manticoutput
 
 # temp
 apt update
@@ -84,16 +84,19 @@ else
     exit 0
 fi
 
-# Return to Extranal WineHQ MIRROR
 cd ../
-mkdir -p ./output
-find . -name \*.deb -exec cp -vf {} ./output \;
+
+if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
+    echo "Mantic repos are synced"
+    exit 0
+fi
+
 
 # send debs to server
-rsync -azP ./output/ ferreo@direct.pika-os.com:/srv/www/incoming/
+rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-external /srv/www/incoming/'
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-external-mantic /srv/www/incoming/'
 
 # publish the repo
-ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite lunar filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
