@@ -50,8 +50,8 @@ do
     mkdir $i-tmp
     dpkg-deb -R $i $i-tmp
     cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
-    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").lunar4#g" $i-tmp/DEBIAN/control
-    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-fixed.deb
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").lunar5#g" $i-tmp/DEBIAN/control
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-lunar5-fixed.deb
 done
 cd ../
 mv -v ./output-tmp/*-fixed.deb ./output/
@@ -115,8 +115,8 @@ do
     mkdir $i-tmp
     dpkg-deb -R $i $i-tmp
     cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
-    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").mantic1#g" $i-tmp/DEBIAN/control
-    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-fixed.deb
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").mantic2#g" $i-tmp/DEBIAN/control
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-mantic2-fixed.deb
 done
 cd ../
 mv -v ./outputmantic-tmp/*-fixed.deb ./outputmantic/
