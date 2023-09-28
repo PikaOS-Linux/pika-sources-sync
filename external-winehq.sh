@@ -31,10 +31,11 @@ do
     echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
     echo 'Pin: release c=main' >> /etc/apt/preferences.d/0-external-sync.conf
     echo 'Pin-Priority: 1000' >> /etc/apt/preferences.d/0-external-sync.conf
-    if apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-i386
+    if apt-cache show $i
     then
-        true
+        apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-i386
     else
+        apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-i386
         echo $i >> ppp32.list
     fi
     rm -rf /etc/apt/preferences.d/0-external-sync.conf
@@ -57,10 +58,11 @@ do
     echo 'Package': * > /etc/apt/preferences.d/0-external-sync.conf
     echo 'Pin: release c=main' >> /etc/apt/preferences.d/0-external-sync.conf
     echo 'Pin-Priority: 1000' >> /etc/apt/preferences.d/0-external-sync.conf
-    if apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-amd64
+    if apt-cache show $i
     then
-        true
+        apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-amd64
     else
+        apt-cache show $i | grep 'Version:' | cut -d":" -f2 | head -n1 | sed 's/ //g' > $i-pika-amd64
         echo $i >> ppp64.list
     fi
     rm -rf /etc/apt/preferences.d/0-external-sync.conf
