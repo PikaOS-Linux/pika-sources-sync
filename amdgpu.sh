@@ -125,7 +125,7 @@ mv -v ./outputmantic-tmp/*-fixed.deb ./outputmantic/
 rsync -azP ./outputmantic/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-amdgpu /srv/www/incoming/'
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-amdgpu-mantic /srv/www/incoming/'
 
 # publish the repo
 ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
