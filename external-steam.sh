@@ -5,46 +5,17 @@ set -e
 chmod 755 ./ppp
 
 # Extranal Steam MIRROR
-mkdir -p ./output/external
-cd ./output/external
-
-# temp
-apt update
-apt upgrade -y
-# end of temp
-
-#Get rid of Pika sources to prevent conflicts
-rm -rf /etc/apt/sources.list.d/pika*
-rm -rf  /etc/apt/preferences.d/*pika*
-
-# Get Extranal Steam pool
-echo 'deb [trusted=yes] https://repo.steampowered.com/steam/ stable steam' | sudo tee /etc/apt/sources.list.d/external.list
-
-PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-i386/Packages)
-if [ ! -z "$PPP32" ]
-then
-    dpkg --add-architecture i386
-    apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
-    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=Valve Software LLC'
-    rm -rfv ./*all.deb
-else
-    echo "i386 Repos are synced"
-fi
-
-PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-amd64/Packages)
-if [ ! -z "$PPP64" ]
-then
-    apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
-    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=Valve Software LLC'
-else
-    echo "AMD64 Repos are synced"
-    exit 0
-fi
-
-# Return to Extranal Steam MIRROR
-cd ../
 mkdir -p ./output
-find . -name \*.deb -exec cp -vf {} ./output \;
+cd ./output
+
+../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-i386/Packages https://repo.steampowered.com/steam/ ./
+../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-amd64/Packages https://repo.steampowered.com/steam/ ./
+
+cd ../
+
+if [ $(ls ./output/ | wc -l) -lt 1 ]; then
+    echo "Lunar repos are synced"
+fi
 
 # send debs to server
 rsync -azP ./output/ ferreo@direct.pika-os.com:/srv/www/incoming/
@@ -54,3 +25,26 @@ ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-
 
 # publish the repo
 ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite lunar filesystem:pikarepo:'
+
+# Extranal XtraDEB PPA MIRROR
+mkdir -p ./manticoutput
+cd ./manticoutput
+
+../ppp https://ppa.pika-os.com/dists/mantic/external/binary-i386/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-i386/Packages https://repo.steampowered.com/steam/ ./
+../ppp https://ppa.pika-os.com/dists/mantic/external/binary-amd64/Packages https://repo.steampowered.com/steam/dists/stable/steam/binary-amd64/Packages https://repo.steampowered.com/steam/ ./
+
+cd ../
+
+if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
+    echo "Mantic repos are synced"
+    exit 0
+fi
+
+# send debs to server
+rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
+
+# add debs to repo
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-external-mantic /srv/www/incoming/'
+
+# publish the repo
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'

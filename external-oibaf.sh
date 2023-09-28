@@ -5,46 +5,17 @@ set -e
 chmod 755 ./ppp
 
 # Extranal Oibaf PPA MIRROR
-mkdir -p ./output/external
-cd ./output/external
-
-# temp
-apt update
-apt upgrade -y
-# end of temp
-
-#Get rid of Pika sources to prevent conflicts
-rm -rf /etc/apt/sources.list.d/pika*
-rm -rf  /etc/apt/preferences.d/*pika*
-
-# Get Extranal Oibaf PPA pool
-echo 'deb [trusted=yes] https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu  lunar main' | sudo tee /etc/apt/sources.list.d/external.list
-
-PPP32=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-i386/Packages.xz | tr ' ' '\n' | grep -E 'meson|16|15|spirv|directx-headers|libdrm' | tr '\n' ' ')
-if [ ! -z "$PPP32" ]
-then
-    dpkg --add-architecture i386
-    apt update -o APT::Architecture="i386" -o APT::Architectures="i386" -y --allow-unauthenticated 
-    apt download $PPP32 -o APT::Architecture="i386" -o APT::Architectures="i386" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
-    rm -rfv ./*all.deb
-else
-    echo "i386 Repos are synced"
-fi
-
-PPP64=$(../../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-amd64/Packages.xz | tr ' ' '\n' | grep -E 'meson|16|15|spirv|directx-headers|libdrm' | tr '\n' ' ')
-if [ ! -z "$PPP64" ]
-then
-    apt update -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --allow-unauthenticated 
-    apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=LP-PPA-oibaf-graphics-drivers'
-else
-    echo "AMD64 Repos are synced"
-    exit 0
-fi
-
-# Return to Extranal Oibaf PPA MIRROR
-cd ../
 mkdir -p ./output
-find . -name \*.deb -exec cp -vf {} ./output \;
+cd ./output
+
+../ppp https://ppa.pika-os.com/dists/lunar/external/binary-i386/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-i386/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "meson,16,15,spirv,directx-headers,libdrm"
+../ppp https://ppa.pika-os.com/dists/lunar/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/lunar/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "meson,16,15,spirv,directx-headers,libdrm"
+
+cd ../
+
+if [ $(ls ./output/ | wc -l) -lt 1 ]; then
+    echo "Lunar repos are synced"
+fi
 
 # send debs to server
 rsync -azP ./output/ ferreo@direct.pika-os.com:/srv/www/incoming/
@@ -54,3 +25,26 @@ ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-
 
 # publish the repo
 ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite lunar filesystem:pikarepo:'
+
+# Extranal XtraDEB PPA MIRROR
+mkdir -p ./manticoutput
+cd ./manticoutput
+
+../ppp https://ppa.pika-os.com/dists/mantic/external/binary-i386/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/mantic/main/binary-i386/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "meson,16,15,spirv,directx-headers,libdrm"
+../ppp https://ppa.pika-os.com/dists/mantic/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "meson,16,15,spirv,directx-headers,libdrm"
+
+cd ../
+
+if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
+    echo "Mantic repos are synced"
+    exit 0
+fi
+
+# send debs to server
+rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
+
+# add debs to repo
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-external-mantic /srv/www/incoming/'
+
+# publish the repo
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
