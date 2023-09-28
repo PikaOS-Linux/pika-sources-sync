@@ -81,7 +81,6 @@ then
     apt download $PPP64 -o APT::Architecture="amd64" -o APT::Architectures="amd64" -y --target-release 'o=dl.winehq.org'
 else
     echo "AMD64 Repos are synced"
-    exit 0
 fi
 
 cd ../
