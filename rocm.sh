@@ -5,30 +5,10 @@ set -e
 chmod 755 ./ppp
 
 # Get ROCm pool
-mkdir -p ./output
-cd ./output
-
-../ppp  https://ppa.pika-os.com/dists/lunar/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/dists/jammy/main/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/ ./
-
-cd ../
-
-if [ $(ls ./output/ | wc -l) -lt 1 ]; then
-    echo "Lunar repos are synced"
-fi
-
-# send debs to server
-rsync -azP ./output/ ferreo@direct.pika-os.com:/srv/www/incoming/
-
-# add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-external /srv/www/incoming/'
-
-# publish the repo
-ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite lunar filesystem:pikarepo:'
-
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp  https://ppa.pika-os.com/dists/mantic/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/dists/jammy/main/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/ ./
+../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/dists/jammy/main/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/ ./
 
 cd ../
 
@@ -41,7 +21,7 @@ fi
 rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-rocm-mantic /srv/www/incoming/'
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-rocm /srv/www/incoming/'
 
 # publish the repo
-ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'

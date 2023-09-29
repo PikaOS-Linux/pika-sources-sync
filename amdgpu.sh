@@ -2,8 +2,8 @@
 set -e
 
 # AMDGPU MIRROR
-mkdir -p ./outputmantic/amdgpu
-cd ./outputmantic/amdgpu
+mkdir -p ./outputpika/amdgpu
+cd ./outputpika/amdgpu
 # amdgpu drm dir
 mkdir -p ./libd
 cd ./libd
@@ -40,27 +40,27 @@ cd ./amdgpu-dkms-firmware
 wget http://repo.radeon.com/amdgpu/5.7/ubuntu/pool/main/a/amdgpu-dkms/amdgpu-dkms-firmware_6.2.4.50700-1652687.22.04_all.deb
 # Return to AMDGPU MIRROR
 cd ../
-mkdir -p ./outputmantic
-mkdir -p ./outputmantic-tmp
-find . -name \*.deb -exec cp -vf {} ./outputmantic-tmp \;
+mkdir -p ./outputpika
+mkdir -p ./outputpika-tmp
+find . -name \*.deb -exec cp -vf {} ./outputpika-tmp \;
 
-cd ./outputmantic-tmp
+cd ./outputpika-tmp
 for i in ./*.deb
 do
     mkdir $i-tmp
     dpkg-deb -R $i $i-tmp
     cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
-    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").mantic2#g" $i-tmp/DEBIAN/control
-    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-mantic2-fixed.deb
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").pikauwu1#g" $i-tmp/DEBIAN/control
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu1-fixed.deb
 done
 cd ../
-mv -v ./outputmantic-tmp/*-fixed.deb ./outputmantic/
+mv -v ./outputpika-tmp/*-fixed.deb ./outputpika/
 
 # send debs to server
-rsync -azP ./outputmantic/ ferreo@direct.pika-os.com:/srv/www/incoming/
+rsync -azP ./outputpika/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-amdgpu-mantic /srv/www/incoming/'
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-amdgpu /srv/www/incoming/'
 
 # publish the repo
-ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'

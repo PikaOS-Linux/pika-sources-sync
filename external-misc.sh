@@ -8,9 +8,9 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp https://ppa.pika-os.com/dists/mantic/external/binary-amd64/Packages https://ppa.launchpadcontent.net/wasta-linux/cinnamon-testing/ubuntu/dists/jammy/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/wasta-linux/cinnamon-testing/ubuntu/ ./ "mintinstall,warpinator,webapp-manager,mint-common,mint-translations"
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/wasta-linux/cinnamon-testing/ubuntu/dists/jammy/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/wasta-linux/cinnamon-testing/ubuntu/ ./ "mintinstall,warpinator,webapp-manager,mint-common,mint-translations"
 
-../ppp https://ppa.pika-os.com/dists/mantic/external/binary-amd64/Packages https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/ ./
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/ ./
 
 cd ../
 
@@ -23,7 +23,7 @@ fi
 rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pika-external-mantic /srv/www/incoming/'
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-external /srv/www/incoming/'
 
 # publish the repo
-ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite mantic filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'
