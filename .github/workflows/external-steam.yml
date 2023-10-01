@@ -3,7 +3,7 @@ name: PikaOS Steam Repo Sync (External)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '22 2 * * *'
 
 jobs:
   build:
