@@ -3,7 +3,7 @@ name: PikaOS XtraDEB Apps PPA Sync (External)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 24 * * *'
+    - cron: '26 2 * * *'
 
 jobs:
   build:
