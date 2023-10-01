@@ -3,7 +3,7 @@ name: PikaOS Kubuntu Backports PPA Sync (External)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 17 * * *'
+    - cron: '17 2 * * *'
 
 jobs:
   build:
