@@ -3,7 +3,7 @@ name: PikaOS Mozilla PPA Sync (External)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 21 * * *'
+    - cron: '21 2 * * *'
 
 jobs:
   build:
