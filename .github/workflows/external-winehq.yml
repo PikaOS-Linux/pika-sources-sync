@@ -3,7 +3,7 @@ name: PikaOS WineHQ Repo Sync (External)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0  * * *'
+    - cron: '24 2 * * *'
 
 jobs:
   build:
