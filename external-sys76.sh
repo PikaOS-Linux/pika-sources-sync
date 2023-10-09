@@ -8,7 +8,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/ ./
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/dists/lunar/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/system76-dev/pre-stable/ubuntu/ ./
 
 cd ../
 
