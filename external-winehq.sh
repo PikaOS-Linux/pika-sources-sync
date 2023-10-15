@@ -8,8 +8,8 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-i386/Packages https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-i386/Packages.xz https://dl.winehq.org/wine-builds/ubuntu/ ./
-../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://dl.winehq.org/wine-builds/ubuntu/dists/lunar/main/binary-amd64/Packages.xz https://dl.winehq.org/wine-builds/ubuntu/ ./
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-i386/Packages https://dl.winehq.org/wine-builds/ubuntu/dists/mantic/main/binary-i386/Packages.xz https://dl.winehq.org/wine-builds/ubuntu/ ./
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://dl.winehq.org/wine-builds/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://dl.winehq.org/wine-builds/ubuntu/ ./
 
 cd ../
 
