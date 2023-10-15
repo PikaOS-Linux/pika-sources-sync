@@ -8,7 +8,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/dists/lunar/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/ ./ "chromium"
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/xtradeb/apps/ubuntu/ ./ "chromium"
 
 cd ../
 
