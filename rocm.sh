@@ -8,7 +8,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/dists/jammy/main/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7/ ./
+../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7.1/dists/jammy/main/binary-amd64/Packages http://repo.radeon.com/rocm/apt/5.7.1/ ./
 
 cd ../
 
