@@ -8,8 +8,8 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp https://ppa.pika-os.com/dists/mantic/external/binary-i386/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/mantic/main/binary-i386/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "meson,16,15,spirv,directx-headers,libdrm"
-../ppp https://ppa.pika-os.com/dists/mantic/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "meson,16,15,spirv,directx-headers,libdrm"
+../ppp https://ppa.pika-os.com/dists/mantic/external/binary-i386/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/mantic/main/binary-i386/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "bindgen,libtgowt,meson,16,15,spirv,directx-headers,libdrm"
+../ppp https://ppa.pika-os.com/dists/mantic/external/binary-amd64/Packages https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/oibaf/graphics-drivers/ubuntu/ ./ "bindgen,libtgowt,meson,16,15,spirv,directx-headers,libdrm"
 
 cd ../
 
