@@ -2,8 +2,6 @@ name: PikaOS Sync All Repos and Purge Cache
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '44 3 * * *'
 
 jobs:
   build:
