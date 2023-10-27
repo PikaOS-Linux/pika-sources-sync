@@ -32,4 +32,4 @@ ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikau
 
 # publish the repo
 #ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'
-ssh ferreo@direct.pika-os.com  'aptly publish repo -components=, pikauwu-oneapi filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com  'aptly publish repo pikauwu-oneapi filesystem:pikarepo:'
