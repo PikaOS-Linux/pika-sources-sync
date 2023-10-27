@@ -12,20 +12,16 @@ ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm libva2'
 chmod 755 ./ppp
 
 # Get oneAPI pool
-mkdir -p ./manticoutput
-cd ./manticoutput
+mkdir -p ./manticoutput-tmp
+cd ./manticoutput-tmp
 
 ../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
 
-cd ../
-
-if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
+if [ $(ls ./ | wc -l) -lt 1 ]; then
     echo "Mantic repos are synced"
     exit 0
 fi
 
-mkdir -p ./manticoutput-real
-cd ./manticoutput-real
 for i in ./*.deb
 do
     mkdir $i-tmp
@@ -35,10 +31,14 @@ do
     sed -e s"#(=#(>=#"g -i $i-tmp/DEBIAN/control
     dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu1-fixed.deb
 done
+
 cd ../
 
+mkdir -p ./manticoutput/
+mv -v ./manticoutput-tmp/*-fixed.deb ./manticoutput/
+
 # send debs to server
-rsync -azP ./manticoutput-real/ ferreo@direct.pika-os.com:/srv/www/incoming/
+rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # Remove currently broken debs
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-i915-dkms_*.deb'
