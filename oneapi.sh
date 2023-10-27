@@ -31,4 +31,5 @@ ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libmetee*.deb'
 ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-oneapi /srv/www/incoming/'
 
 # publish the repo
-ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'
+#ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com  'aptly publish repo -components=, pikauwu-oneapi filesystem:pikarepo:'
