@@ -1,6 +1,13 @@
 #! /bin/bash
 set -e
 
+ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm intel-media-va-driver-non-free'
+ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm libva-drm2' 
+ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm libva-glx2' 
+ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm libva-wayland2'
+ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm libva-x11-2'
+ssh ferreo@direct.pika-os.com 'aptly repo remove pikauwu-rocm libva2'
+
 # Give correct perms to Apt version checker
 chmod 755 ./ppp
 
