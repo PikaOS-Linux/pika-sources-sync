@@ -15,7 +15,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput-tmp
 cd ./manticoutput-tmp
 
-../ppp  https://ppa.pika-os.com/dists/pikauwu/lobo/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
+../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
 
 rm -rfv ./intel-i915-dkms_*.deb
 rm -rfv ./libdrm*.deb
