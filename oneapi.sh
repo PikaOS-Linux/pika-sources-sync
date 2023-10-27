@@ -19,7 +19,11 @@ cd ./manticoutput-tmp
 
 rm -rfv ./intel-i915-dkms_*.deb
 rm -rfv ./libdrm*.deb
-rm -rfv ./*va*.deb
+rm -rfv ./*va*.d
+wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | sudo gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu jammy unified" | sudo tee /etc/apt/sources.list.d/intel-gpu-jammy.list
+sudo apt update
+
 
 if [ $(ls ./ | wc -l) -lt 1 ]; then
     echo "Mantic repos are synced"
