@@ -8,7 +8,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput
 cd ./manticoutput
 
-../ppp  https://ppa.pika-os.com/dists/pikauwu/oneapi/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
+../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
 
 cd ../
 
@@ -28,8 +28,7 @@ ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libdrm*.deb'
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libmetee*.deb'
 
 # add debs to repo
-ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-oneapi /srv/www/incoming/'
+ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-rocm /srv/www/incoming/'
 
 # publish the repo
-#ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'
-ssh ferreo@direct.pika-os.com  'aptly publish repo pikauwu-oneapi filesystem:pikarepo:'
+ssh ferreo@direct.pika-os.com 'aptly publish update -batch -skip-contents -force-overwrite pikauwu filesystem:pikarepo:'
