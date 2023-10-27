@@ -15,7 +15,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput-tmp
 cd ./manticoutput-tmp
 
-../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
+../ppp  https://ppa.pika-os.com/dists/pikauwu/lobo/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
 
 rm -rfv ./intel-i915-dkms_*.deb
 rm -rfv ./libdrm*.deb
@@ -37,9 +37,9 @@ do
     mkdir $i-tmp
     dpkg-deb -R $i $i-tmp
     cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
-    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").pikauwu1#g" $i-tmp/DEBIAN/control
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").pikauwu2#g" $i-tmp/DEBIAN/control
     sed -e s"#(=#(>=#"g -i $i-tmp/DEBIAN/control
-    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu1-fixed.deb
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu2-fixed.deb
 done
 
 cd ../
