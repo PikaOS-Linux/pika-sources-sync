@@ -1,4 +1,4 @@
-name: PikaOS Sync oneAPI Sync
+name: PikaOS Sync Intel oneAPI Sync
 
 on:
   workflow_dispatch
