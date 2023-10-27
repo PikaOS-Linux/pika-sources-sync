@@ -19,11 +19,13 @@ cd ./manticoutput-tmp
 
 rm -rfv ./intel-i915-dkms_*.deb
 rm -rfv ./libdrm*.deb
-rm -rfv ./*va*.d
-wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | sudo gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu jammy unified" | sudo tee /etc/apt/sources.list.d/intel-gpu-jammy.list
-sudo apt update
-
+rm -rfv ./*va*.deb
+rm -rfv ./intel-gsc*.deb
+rm -rfv ./libmetee*.deb
+wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | gpg --dearmor --output /usr/share/keyrings/intel-graphics.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu jammy unified" | tee /etc/apt/sources.list.d/intel-gpu-jammy.list
+apt update
+apt download -y intel-gsc intel-gsc-dev libmetee-dev libmetee
 
 if [ $(ls ./ | wc -l) -lt 1 ]; then
     echo "Mantic repos are synced"
