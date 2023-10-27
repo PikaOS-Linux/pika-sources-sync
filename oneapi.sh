@@ -32,8 +32,10 @@ ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-gsc_*_amd64.deb '
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-gsc-dev_*_amd64.deb'
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-i915-dkms_*.deb'
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libdrm*.deb'
-ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/*va*.deb'
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libmetee*.deb'
+ssh ferreo@direct.pika-os.com  /bin/bash << EOF
+rm -rfv /srv/www/incoming/*va*.deb
+EOF
 
 # add debs to repo
 ssh ferreo@direct.pika-os.com 'aptly repo add -force-replace -remove-files pikauwu-rocm /srv/www/incoming/'
