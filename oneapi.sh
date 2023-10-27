@@ -15,7 +15,7 @@ chmod 755 ./ppp
 mkdir -p ./manticoutput-tmp
 cd ./manticoutput-tmp
 
-../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
+../ppp  https://ppa.pika-os.com/dists/pikauwu/rocm/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/production/2328/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
 
 if [ $(ls ./ | wc -l) -lt 1 ]; then
     echo "Mantic repos are synced"
