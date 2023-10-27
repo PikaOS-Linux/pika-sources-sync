@@ -24,15 +24,25 @@ if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
     exit 0
 fi
 
+mkdir -p ./manticoutput-real
+cd ./manticoutput-real
+for i in ./*.deb
+do
+    mkdir $i-tmp
+    dpkg-deb -R $i $i-tmp
+    cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").pikauwu1#g" $i-tmp/DEBIAN/control
+    sed -e s"#(=#(>=#"g -i $i-tmp/DEBIAN/control
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu1-fixed.deb
+done
+cd ../
+
 # send debs to server
-rsync -azP ./manticoutput/ ferreo@direct.pika-os.com:/srv/www/incoming/
+rsync -azP ./manticoutput-real/ ferreo@direct.pika-os.com:/srv/www/incoming/
 
 # Remove currently broken debs
-ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-gsc_*_amd64.deb '
-ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-gsc-dev_*_amd64.deb'
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/intel-i915-dkms_*.deb'
 ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libdrm*.deb'
-ssh ferreo@direct.pika-os.com 'rm -rfv /srv/www/incoming/libmetee*.deb'
 ssh ferreo@direct.pika-os.com  /bin/bash << EOF
 rm -rfv /srv/www/incoming/*va*.deb
 EOF
