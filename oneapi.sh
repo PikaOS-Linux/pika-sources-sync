@@ -10,6 +10,10 @@ cd ./manticoutput
 
 ../ppp  https://ppa.pika-os.com/dists/pikauwu/oneapi/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/dists/jammy/unified/binary-amd64/Packages https://repositories.intel.com/gpu/ubuntu/ ./
 
+rm -rfv intel-gsc_*_amd64.deb 
+rm -rfv libdrm*.deb 
+rm -rfv libmetee*.deb
+
 cd ../
 
 if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
