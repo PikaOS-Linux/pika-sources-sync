@@ -3,7 +3,7 @@ name: PikaOS Ubuntu Repo Sync (Proposed)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 1 * * *'
+    - cron: '55 0 * * *'
 
 jobs:
   build:
