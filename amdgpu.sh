@@ -50,8 +50,8 @@ do
     mkdir $i-tmp
     dpkg-deb -R $i $i-tmp
     cat $i-tmp/DEBIAN/control | grep Version: | head -n1 | cut -d":" -f2- | tr -d ' ' > $i-version
-    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").pikauwu2#g" $i-tmp/DEBIAN/control
-    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu1-fixed.deb
+    sed -i "s#$(cat $i-version)#$(cat $i-version)-pika$(date +"%Y%m%d").pikauwu3#g" $i-tmp/DEBIAN/control
+    dpkg-deb -b $i-tmp $i-"$(date +"%Y%m%d")"-pika-pikauwu3-fixed.deb
 done
 cd ../
 mv -v ./outputpika-tmp/*-fixed.deb ./outputpika/
