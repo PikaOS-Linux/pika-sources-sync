@@ -2,8 +2,6 @@ name: PikaOS LunarG Vulkan SDK (External)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '18 2 * * *'
 
 jobs:
   build:
