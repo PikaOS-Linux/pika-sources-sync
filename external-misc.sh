@@ -12,6 +12,8 @@ cd ./manticoutput
 
 ../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/papirus/papirus/ubuntu/ ./
 
+../ppp https://ppa.pika-os.com/dists/pikauwu/external/binary-amd64/Packages https://ppa.launchpadcontent.net/~linneris/xivlauncher-core-stable/ubuntu/dists/mantic/main/binary-amd64/Packages.xz https://ppa.launchpadcontent.net/~linneris/xivlauncher-core-stable/ubuntu/ ./
+
 cd ../
 
 if [ $(ls ./manticoutput/ | wc -l) -lt 1 ]; then
