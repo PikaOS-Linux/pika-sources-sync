@@ -2,8 +2,8 @@ name: PikaOS System76 PPA Sync (External)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '23 2 * * *'
+ # schedule:
+   # - cron: '23 2 * * *'
 
 jobs:
   build:
