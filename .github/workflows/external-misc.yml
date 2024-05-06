@@ -2,8 +2,8 @@ name: PikaOS Misc PPAs Sync (External)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '19 2 * * *'
+ # schedule:
+  #  - cron: '19 2 * * *'
 
 jobs:
   build:
