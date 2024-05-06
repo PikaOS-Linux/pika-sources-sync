@@ -2,8 +2,8 @@ name: PikaOS Ubuntu Repo Sync (Security)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '50 0 * * *'
+ # schedule:
+   # - cron: '50 0 * * *'
 
 jobs:
   build:
