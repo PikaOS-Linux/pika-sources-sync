@@ -2,8 +2,8 @@ name: PikaOS Sync Intel oneAPI Sync
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '19 2 * * *'
+#  schedule:
+   # - cron: '19 2 * * *'
 
 
 jobs:
