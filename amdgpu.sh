@@ -29,11 +29,11 @@ wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m http://repo.radeon.com/a
 # Return to AMDGPU MIRROR
 cd ../
 # amdgpu proprietary dir
-#mkdir -p ./proprietary
-#cd ./proprietary
-#wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m https://repo.radeon.com/amdgpu/6.1.1/ubuntu/pool/proprietary/
-# Return to AMDGPU MIRROR
-#cd ../
+mkdir -p ./proprietary
+cd ./proprietary
+wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m https://repo.radeon.com/amdgpu/6.0.1/ubuntu/pool/proprietary/
+ Return to AMDGPU MIRROR
+cd ../
 # amdgpu-dkms-firmware dir
 mkdir -p ./amdgpu-dkms-firmware
 cd ./amdgpu-dkms-firmware
