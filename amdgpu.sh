@@ -32,7 +32,7 @@ cd ../
 mkdir -p ./proprietary
 cd ./proprietary
 wget --recursive --no-parent -R "*20.04*.deb" -A "*" -m https://repo.radeon.com/amdgpu/6.0.1/ubuntu/pool/proprietary/
- Return to AMDGPU MIRROR
+# Return to AMDGPU MIRROR
 cd ../
 # amdgpu-dkms-firmware dir
 mkdir -p ./amdgpu-dkms-firmware
