@@ -216,4 +216,5 @@ var brokenPackages = map[string]bool{
 	"libnvidia-common-390":            true,
 	"libnvidia-common-530":            true,
 	"midisport-firmware":              true,
+	"libglib2.0":                      true,
 }
