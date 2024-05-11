@@ -213,8 +213,11 @@ type packageInfo struct {
 }
 
 var brokenPackages = map[string]bool{
-	"libnvidia-common-390":            true,
-	"libnvidia-common-530":            true,
-	"midisport-firmware":              true,
-	"libglib2.0":                      true,
+	"libnvidia-common-390": true,
+	"libnvidia-common-530": true,
+	"midisport-firmware":   true,
+	"libglib2.0-0":         true,
+	"libglib2.0-bin":       true,
+	"libglib2.0-dev":       true,
+	"libglib2.0-dev-bin":   true,
 }
